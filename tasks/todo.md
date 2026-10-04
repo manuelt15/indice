@@ -1,18 +1,18 @@
 # Plan de índice
 
 > Página para que cualquier persona guarde y organice sus marcadores, con cuenta propia y privada.
-> Estado: **en construcción**. F0 a F6 cerradas; F7 hecha, pendiente del visto bueno de Manuel. Última actualización: 2026-10-04.
+> Estado: **en construcción**. F0 a F7 cerradas. Siguiente: F8. Última actualización: 2026-10-04.
 > Preview visual: https://claude.ai/artifact/H2iLStCWFxeGcyXBcDPUux (landing · entrar · bienvenida · app · /kit)
 
 ---
 
 ## Para retomar (otro agente o sesión)
 
-- **Rama actual:** `fase-7-clasificacion` (subida a GitHub, `manuelt15/indice`, privado). `main` llega hasta F6. No se hace push a `main` sin confirmarlo con Manuel; las fases se integran con merge cuando él lo dice.
+- **Rama actual:** `main` (GitHub `manuelt15/indice`, privado), con F0 a F7 integradas. Cada fase nueva va en su rama (`fase-8-landing`…) y se integra con merge cuando Manuel lo dice. No se hace push a `main` sin confirmarlo con él.
 - **Arrancar:** `npm run dev` (puerto 3100). `.env.local` ya está completo (Neon, Better Auth, Google, GitHub); nunca imprimir sus valores.
 - **Antes de cerrar una fase:** `npm run lint`, `npm run typecheck`, `npm test`, `npm run build` en verde, y comprobar en el navegador (claro, oscuro y 375px).
 - **Probar con usuario:** `prueba@indice.test` por código; el código sale en la consola del servidor. Queda creado en la base de datos de desarrollo: borrarlo cuando haya borrado de cuenta (F8b) o pedírselo a Manuel. Los datos reales de Manuel nunca van al repo.
-- **Siguiente:** Manuel pulsa Reorganizar automáticamente y da el visto bueno a las categorías; entonces merge de F7 en `main` y empezar F8.
+- **Siguiente:** F8 (landing pública, mapa mapcn real en el footer, mapa de calor en móvil abierto en la semana actual, CSP con hash del script de tema, pulir textos). Después F8b, F9 y F10. Por decidir: dominio `indice.dev` y servicio de correo (Resend), necesarios antes de abrir a otras personas.
 - **Último arreglo (2026-10-04):** favicons que seguían rotos (huggingface, mapcn, manueltorres.pro, blobatar, autoskills, pixelcrash). El servidor ya los descargaba bien; el navegador guardaba 404 antiguos y `SiteIcon` no detectaba imágenes rotas antes de hidratar. Ahora la URL lleva versión (`lib/favicon-url.ts`, subir `FAVICON_VERSION` si vuelve a pasar) y `SiteIcon` comprueba con `decode()`.
 
 ---
@@ -204,7 +204,7 @@ Cada fase se cierra solo cuando su criterio se cumple con evidencia (tests, lint
 - [x] **F5 · App.** Resumen (mapa de calor, categorías, recientes, fijados), biblioteca A–Z con pestañas por categoría, buscador ⌘K, añadir con N o pegando una URL en cualquier sitio (nombre propuesto desde el título de la página), fijar y borrar con confirmación, favicons originales vía `/api/favicon/[host]` con caché. Descarga segura `safeFetch` (solo http/https en 80/443, IPs internas bloqueadas también tras DNS y redirecciones, límites de tiempo y tamaño; tipo de imagen comprobado por sus bytes; SVG servido con CSP sandbox). *Cerrada el 2026-10-04:* flujo completo probado en el navegador (escritorio y 375px), duplicados detectados, 104 tests.
   - **Resuelto el pendiente de la revisión de seguridad de F3:** FK compuesta `(user_id, category_id)` → `category(user_id, id)` (migraciones 0003 y 0004), con test que demuestra que B no puede usar una categoría de A.
 - [x] **F6 · Importar de Chrome.** `/importar` (también desde la bienvenida y desde la app). El archivo se lee en el navegador y solo se envían los enlaces; el servidor revalida todo (solo http/https, máx. 5.000, 5 MB). Carpeta de primer nivel = categoría, subcarpetas = tags, fecha original conservada, duplicados saltados (en el archivo y frente a lo que ya hay), todo en una transacción. Favicons con fondo claro en oscuro. Probado con un export de ejemplo de Chrome en el navegador; 114 tests. *Cerrada el 2026-10-04:* Manuel importó su export real, 43 enlaces. Arreglados los favicons que faltaban: .ico grandes (huggingface.co, 205 KB; límite subido a 512 KB) y webs con solo favicon SVG (mapcn, manueltorres.pro, blobatar).
-- [ ] **F7 · Clasificación.** Reglas gratuitas y locales (`lib/classify.ts`): dominio, ruta y título puntúan UI, Diseño, IA, Dev, Aprender y Personal; la web propia se reconoce por el nombre del usuario. Se aplica al importar (las carpetas pasan a tags), al añadir (sugerencia con su porqué) y con el botón Reorganizar automáticamente (las categorías antiguas se guardan como tags y se borran las que quedan vacías). Probado con los 43 marcadores reales de Manuel sin guardarlos en el repo: 43/43 clasificados. 139 tests. *Falta para cerrar:* que Manuel pulse Reorganizar en su cuenta y dé el visto bueno.
+- [x] **F7 · Clasificación.** Reglas gratuitas y locales (`lib/classify.ts`): dominio, ruta y título puntúan UI, Diseño, IA, Dev, Aprender y Personal; la web propia se reconoce por el nombre del usuario. Se aplica al importar (las carpetas pasan a tags), al añadir (sugerencia con su porqué) y con el botón Reorganizar automáticamente (las categorías antiguas se guardan como tags y se borran las que quedan vacías). Probado con los 43 marcadores reales de Manuel sin guardarlos en el repo: 43/43 clasificados. 139 tests. *Cerrada el 2026-10-04:* Manuel reorganizó su cuenta y dio el visto bueno; integrada en `main`.
   - IA opcional (fase posterior): descartada por ahora para no tener costes.
 - [ ] **F8 · Landing y footer.** Landing pública con datos de ejemplo y mapa mapcn pequeño. *Hecho cuando:* está revisada en móvil y escritorio, claro y oscuro, sin errores en consola.
   - Pulir: en móvil, el mapa de calor debe abrirse mostrando la semana actual (ahora empieza en el mes más antiguo).
