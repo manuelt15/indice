@@ -6,7 +6,7 @@ import { revalidatePath } from "next/cache"
 import { db } from "@/db"
 import { deleteAccount } from "@/lib/dal/account"
 import { profileRepo, type ProfileInput } from "@/lib/dal/profile"
-import { requireOnboardedUser } from "@/lib/session"
+import { requireOnboardedUser, requireUser } from "@/lib/session"
 
 export type SettingsResult = { ok: true } | { ok: false; error: string }
 
@@ -22,9 +22,12 @@ export async function updateProfileAction(input: ProfileInput): Promise<Settings
   return { ok: true }
 }
 
-/** Supresión: borra la cuenta y todo lo asociado. Hay que escribir "borrar" para confirmar. */
+/**
+ * Supresión: borra la cuenta y todo lo asociado. Hay que escribir "borrar" para confirmar.
+ * Basta con tener sesión: quien no acepta los términos en la bienvenida también puede irse.
+ */
 export async function deleteAccountAction(confirmation: string): Promise<SettingsResult> {
-  const user = await requireOnboardedUser()
+  const user = await requireUser()
   if (typeof confirmation !== "string" || confirmation.trim().toLowerCase() !== "borrar") {
     return { ok: false, error: "Escribe «borrar» para confirmar." }
   }

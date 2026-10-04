@@ -229,7 +229,7 @@ Cada fase se cierra solo cuando su criterio se cumple con evidencia (tests, lint
   - [x] *Código:* limpieza diaria con Vercel Cron (`/api/cron/limpieza`, protegida con `CRON_SECRET`): sesiones caducadas, códigos caducados y límites de uso viejos. Con test.
   - [x] *Código:* en producción, sin servicio de correo configurado, `/entrar` no ofrece el código por correo (solo Google y GitHub).
   - [x] *Código:* revisión de seguridad de todo lo hecho desde F3 (acciones, safeFetch, favicons, mapa, importar, exportar, borrar, cron): sin hallazgos. Repetir `/security-review` sobre el diff final antes de producción.
-  - [ ] *Código:* quien entra y no acepta los términos no puede borrar su cuenta (Ajustes exige haberlos aceptado). Añadir "No quiero continuar, borrar mi cuenta" en la bienvenida.
+  - [x] *Código:* quien entra y no acepta los términos puede borrar su cuenta desde la bienvenida ("¿No quieres continuar? Borra tu cuenta."). Probado en el navegador.
   - [ ] *Manuel:* en Vercel, usar una URL estable (el dominio del proyecto, no la de cada deploy) como `BETTER_AUTH_URL` y en las apps OAuth: Better Auth rechaza orígenes distintos.
   - [ ] *Manuel:* importar el repo en Vercel (Hobby), crear apps OAuth de producción en Google y GitHub con la URL de Vercel, y una rama de Neon aparte para producción.
   - [ ] *Manuel:* variables de entorno en Vercel (nunca pegarlas en el chat): `DATABASE_URL`, `BETTER_AUTH_SECRET` nuevo, `BETTER_AUTH_URL`, `GOOGLE_*`, `GITHUB_*`, `CARTO_BASEMAPS_API_KEY`, `CRON_SECRET`.
