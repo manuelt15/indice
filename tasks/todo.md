@@ -1,10 +1,12 @@
 # Plan de índice
 
 > Página para que cualquier persona guarde y organice sus marcadores, con cuenta propia y privada.
-> Estado: **en construcción**. F0 a F8 cerradas e integradas en `main`. F8b integrada en `main` (código hecho; quedan tareas de Manuel). F9 desplegada en https://indice-phi.vercel.app; quedan comprobaciones. Última actualización: 2026-10-04.
+> Estado: **en producción** en https://indice-phi.vercel.app. F0 a F9 en `main`; quedan tareas de Manuel y F10 (vídeo). Última actualización: 2026-10-04.
 > Preview visual: https://claude.ai/artifact/H2iLStCWFxeGcyXBcDPUux (landing · entrar · bienvenida · app · /kit)
 
+- [Handover de F8 a F9, 2026-10-04](handovers-archive/HANDOVER-2026-10-04-fases-8-a-9-produccion.md) — índice en producción: cumplimiento, Ajustes, Neon con dos ramas, Vercel solo `main`; pendientes y trampas.
 - [Handover de F8, 2026-10-04](handovers-archive/HANDOVER-2026-10-04-fase-8-landing.md) — F8 cerrada el mismo día con la clave de CARTO; detalles del mapa y la CSP.
+- [Lecciones](lessons.md) — correcciones de Manuel: responder en español; no afirmar en textos legales lo que aún no es cierto.
 
 ---
 
