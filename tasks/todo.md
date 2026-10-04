@@ -1,7 +1,7 @@
 # Plan de índice
 
 > Página para que cualquier persona guarde y organice sus marcadores, con cuenta propia y privada.
-> Estado: **en construcción**. F0 a F8 cerradas e integradas en `main`. F8b integrada en `main` (código hecho; quedan tareas de Manuel). Siguiente: F9. Última actualización: 2026-10-04.
+> Estado: **en construcción**. F0 a F8 cerradas e integradas en `main`. F8b integrada en `main` (código hecho; quedan tareas de Manuel). F9 desplegada en https://indice-phi.vercel.app; quedan comprobaciones. Última actualización: 2026-10-04.
 > Preview visual: https://claude.ai/artifact/H2iLStCWFxeGcyXBcDPUux (landing · entrar · bienvenida · app · /kit)
 
 - [Handover de F8, 2026-10-04](handovers-archive/HANDOVER-2026-10-04-fase-8-landing.md) — F8 cerrada el mismo día con la clave de CARTO; detalles del mapa y la CSP.
@@ -232,8 +232,11 @@ Cada fase se cierra solo cuando su criterio se cumple con evidencia (tests, lint
   - [x] *Código:* quien entra y no acepta los términos puede borrar su cuenta desde la bienvenida ("¿No quieres continuar? Borra tu cuenta."). Probado en el navegador.
   - [ ] *Manuel:* en Vercel, usar una URL estable (el dominio del proyecto, no la de cada deploy) como `BETTER_AUTH_URL` y en las apps OAuth: Better Auth rechaza orígenes distintos.
   - [x] Neon: la rama `production` (la de siempre, con los datos reales) es producción; `desarrollo` (copia, sin auto-borrado) es la de local. `.env.local` apunta a desarrollo y guarda las de producción como `*_PRODUCCION`. Comprobado.
-  - [ ] *Manuel:* importar el repo en Vercel (Hobby) y crear apps OAuth de producción en Google y GitHub con la URL de Vercel.
-  - [ ] *Manuel:* variables de entorno en Vercel (nunca pegarlas en el chat): `DATABASE_URL` (= `DATABASE_URL_PRODUCCION` de `.env.local`), `BETTER_AUTH_SECRET` nuevo, `BETTER_AUTH_URL`, `GOOGLE_*`, `GITHUB_*`, `CARTO_BASEMAPS_API_KEY`, `CRON_SECRET`.
+  - [x] *Manuel:* proyecto `indice` en Vercel (Hobby), dominio `https://indice-phi.vercel.app`, app OAuth de GitHub para producción y URLs de producción en el cliente de Google.
+  - [x] *Manuel:* variables de entorno en Vercel (nunca pegarlas en el chat): `DATABASE_URL` (= `DATABASE_URL_PRODUCCION` de `.env.local`), `BETTER_AUTH_SECRET` nuevo, `BETTER_AUTH_URL`, `GOOGLE_*`, `GITHUB_*`, `CARTO_BASEMAPS_API_KEY`, `CRON_SECRET`. Solo en Production (las previews no tocan la base de datos real).
+  - [x] Deploy en producción comprobado el 2026-10-04: funciones en `fra1`, cabeceras de seguridad y CSP, páginas legales, mapa vía `/api/map` sin peticiones a terceros, rutas privadas protegidas (401/307), consola sin errores.
+  - [ ] *Manuel:* probar el login con Google y con GitHub en producción.
+  - [ ] Comprobar mañana en Vercel (Logs, cron) que la limpieza de las 4:00 respondió 200.
 - [ ] **F10 · Vídeo de lanzamiento (al terminar todo).** Probar la skill [onetake](https://github.com/feitangyuan/onetake), que genera vídeos de producto en una sola toma con movimiento continuo de cámara.
   - **Funcionamiento:** es local y no usa APIs de pago. Necesita Python 3 (playwright, numpy, scipy, Pillow, matplotlib, opencv), ffmpeg y node.
   - **Licencia:** PolyForm Noncommercial. Vale para uso personal; si índice llegara a ser comercial, el vídeo no podría usarse así.
