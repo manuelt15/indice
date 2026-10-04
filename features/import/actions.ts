@@ -11,7 +11,7 @@ export type ImportResult = { ok: true; summary: ImportSummary } | { ok: false; e
 export async function importBookmarksAction(items: unknown): Promise<ImportResult> {
   const user = await requireOnboardedUser()
   try {
-    const summary = await importBookmarks(db, user.id, items)
+    const summary = await importBookmarks(db, user.id, items, Date.now(), user.name)
     revalidatePath("/app")
     return { ok: true, summary }
   } catch {

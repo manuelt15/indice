@@ -45,6 +45,20 @@ export function AddLinkDialog({
   const [status, setStatus] = React.useState<string | null>(isHttpUrl(initialUrl) ? "Leyendo la página…" : null)
   const [error, setError] = React.useState<string | null>(null)
   const [pending, startTransition] = React.useTransition()
+  const [suggested, setSuggested] = React.useState<string | null>(null)
+  const categoryTouched = React.useRef(false)
+
+  /** Aplica la categoría sugerida si el usuario aún no ha elegido una. */
+  const applySuggestion = React.useCallback(
+    (suggestion: { category: string; reasons: string[] } | null) => {
+      if (!suggestion || categoryTouched.current) return
+      const existing = categories.find((c) => c.name.toLowerCase() === suggestion.category.toLowerCase())
+      setCategory(existing ? existing.id : NEW_CATEGORY)
+      if (!existing) setNewCategory(suggestion.category)
+      setSuggested(`Sugerida: ${suggestion.category}, por ${suggestion.reasons.join(", ")}.`)
+    },
+    [categories]
+  )
 
   const lookup = React.useCallback(
     async (value: string) => {
@@ -53,8 +67,9 @@ export function AddLinkDialog({
       const preview = await previewLinkAction(value.trim())
       setStatus(null)
       if (preview.ok && !nameTouched) setName(preview.title ?? preview.host)
+      if (preview.ok) applySuggestion(preview.suggestion)
     },
-    [nameTouched]
+    [nameTouched, applySuggestion]
   )
 
   // Al abrir con una URL pegada, propone el nombre en cuanto llega el título.
@@ -64,12 +79,15 @@ export function AddLinkDialog({
     previewLinkAction(initialUrl.trim()).then((preview) => {
       if (cancelled) return
       setStatus(null)
-      if (preview.ok) setName((current) => current || (preview.title ?? preview.host))
+      if (preview.ok) {
+        setName((current) => current || (preview.title ?? preview.host))
+        applySuggestion(preview.suggestion)
+      }
     })
     return () => {
       cancelled = true
     }
-  }, [initialUrl])
+  }, [initialUrl, applySuggestion])
 
   function submit(event: React.FormEvent) {
     event.preventDefault()
@@ -139,7 +157,15 @@ export function AddLinkDialog({
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="flex flex-col gap-1.5">
               <Label htmlFor="add-category">Categoría</Label>
-              <NativeSelect id="add-category" value={category} onChange={(e) => setCategory(e.target.value)}>
+              <NativeSelect
+                id="add-category"
+                value={category}
+                onChange={(e) => {
+                  categoryTouched.current = true
+                  setSuggested(null)
+                  setCategory(e.target.value)
+                }}
+              >
                 <NativeSelectOption value="">Sin categoría</NativeSelectOption>
                 {categories.map((c) => (
                   <NativeSelectOption key={c.id} value={c.id}>
@@ -148,6 +174,7 @@ export function AddLinkDialog({
                 ))}
                 <NativeSelectOption value={NEW_CATEGORY}>Nueva categoría…</NativeSelectOption>
               </NativeSelect>
+              {suggested ? <p className="font-mono text-2xs text-muted-foreground">{suggested}</p> : null}
             </div>
             <div className="flex flex-col gap-1.5">
               <Label htmlFor="add-tags">Tags, separados por coma</Label>

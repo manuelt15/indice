@@ -24,16 +24,16 @@ afterAll(async () => close())
 const parsed = parseBookmarksHtml(readFileSync("test/fixtures/chrome-bookmarks.html", "utf8"))
 
 describe("importar marcadores", () => {
-  it("importa, crea categorías de primer nivel y usa subcarpetas como tags", async () => {
+  it("categoriza cada enlace por lo que es y guarda las carpetas como tags", async () => {
     const summary = await importBookmarks(db, "a", parsed.bookmarks, NOW)
-    expect(summary).toEqual({ added: 4, duplicates: 1, invalid: 0, categories: 1 })
+    expect(summary).toMatchObject({ added: 4, duplicates: 1, invalid: 0 })
 
     const links = await linksRepo(db).list("a")
-    const cats = await categoriesRepo(db).list("a")
-    expect(cats.map((c) => c.name)).toEqual(["Diseño & UI"])
-    const bits = links.find((l) => l.url.includes("reactbits"))!
-    expect(bits.categoryId).toBe(cats[0].id)
-    expect(bits.tags).toEqual(["animaciones"])
+    const cats = new Map((await categoriesRepo(db).list("a")).map((c) => [c.id, c.name]))
+    const byHost = (h: string) => links.find((l) => l.url.includes(h))!
+    expect(cats.get(byHost("reactbits").categoryId!)).toBe("UI")
+    expect(cats.get(byHost("ollama").categoryId!)).toBe("IA")
+    expect(byHost("reactbits").tags).toEqual(["diseño & ui", "animaciones"])
   })
 
   it("conserva la fecha original del marcador", async () => {

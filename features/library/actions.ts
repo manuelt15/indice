@@ -3,7 +3,9 @@
 import { revalidatePath } from "next/cache"
 import { z } from "zod"
 import { db } from "@/db"
+import { classifyLink } from "@/lib/classify"
 import { categoriesRepo, categoryName } from "@/lib/dal/categories"
+import { reorganizeLinks, type ReorganizeSummary } from "@/lib/dal/reorganize"
 import { linksRepo } from "@/lib/dal/links"
 import { extractTitle } from "@/lib/net/page-meta"
 import { safeFetch } from "@/lib/net/safe-fetch"
@@ -18,20 +20,22 @@ function isUniqueViolation(error: unknown): boolean {
   return e?.code === "23505" || e?.cause?.code === "23505"
 }
 
-export type LinkPreview = { ok: true; title: string | null; host: string } | { ok: false; error: string }
+export type LinkPreview =
+  | { ok: true; title: string | null; host: string; suggestion: { category: string; reasons: string[] } | null }
+  | { ok: false; error: string }
 
 /** Lee el título de la página para proponer un nombre. Descarga segura (sin redes internas). */
 export async function previewLinkAction(rawUrl: string): Promise<LinkPreview> {
-  await requireOnboardedUser()
+  const user = await requireOnboardedUser()
   const parsed = httpUrl.safeParse(rawUrl)
   if (!parsed.success) return { ok: false, error: parsed.error.issues[0]?.message ?? "URL no válida." }
   const host = new URL(parsed.data).hostname.replace(/^www\./, "")
   try {
     const res = await safeFetch(parsed.data, { maxBytes: 256 * 1024, accept: "text/html", truncate: true })
     const title = res.contentType.includes("html") ? extractTitle(res.body.toString("utf8")) : null
-    return { ok: true, title, host }
+    return { ok: true, title, host, suggestion: classifyLink({ url: parsed.data, title, ownerName: user.name }) }
   } catch {
-    return { ok: true, title: null, host }
+    return { ok: true, title: null, host, suggestion: classifyLink({ url: parsed.data, ownerName: user.name }) }
   }
 }
 
@@ -76,4 +80,18 @@ export async function deleteLinkAction(linkId: string): Promise<ActionResult> {
   if (!done) return { ok: false, error: "Ese enlace no existe." }
   revalidatePath("/app")
   return { ok: true }
+}
+
+export type ReorganizeResult = { ok: true; summary: ReorganizeSummary } | { ok: false; error: string }
+
+/** Reclasifica todos los enlaces del usuario por reglas. */
+export async function reorganizeAction(): Promise<ReorganizeResult> {
+  const user = await requireOnboardedUser()
+  try {
+    const summary = await reorganizeLinks(db, user.id, user.name)
+    revalidatePath("/app")
+    return { ok: true, summary }
+  } catch {
+    return { ok: false, error: "No hemos podido reorganizar tus enlaces. Inténtalo de nuevo." }
+  }
 }

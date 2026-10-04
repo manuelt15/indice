@@ -4,6 +4,7 @@ import * as React from "react"
 import { SiteIcon } from "@/components/ds/site-icon"
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog"
 import type { CategoryView, LinkView } from "@/features/library/types"
+import { faviconSrc } from "@/lib/favicon-url"
 
 function fold(text: string) {
   return text.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase()
@@ -123,7 +124,7 @@ export function SearchDialog({
                   onClick={() => openLink(link)}
                   className="flex w-full min-w-0 items-center gap-3 rounded-lg px-2.5 py-2 text-left aria-selected:bg-secondary in-aria-selected:bg-secondary"
                 >
-                  <SiteIcon src={`/api/favicon/${link.host}`} name={link.name} />
+                  <SiteIcon src={faviconSrc(link.host)} name={link.name} />
                   <span className="min-w-0 truncate text-sm text-foreground">
                     <Highlight text={link.name} query={q} />
                   </span>

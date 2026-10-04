@@ -14,7 +14,8 @@ export async function GET(request: Request, ctx: { params: Promise<{ host: strin
   if (!host) return new Response(null, { status: 400 })
 
   const icon = await getFavicon(db, host)
-  if (!icon) return new Response(null, { status: 404, headers: { "Cache-Control": "private, max-age=86400" } })
+  // Poco tiempo: si la web arregla su icono (o nosotros la descarga), se vuelve a pedir pronto.
+  if (!icon) return new Response(null, { status: 404, headers: { "Cache-Control": "private, max-age=3600" } })
 
   return new Response(new Uint8Array(icon.data), {
     headers: {
