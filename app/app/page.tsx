@@ -13,6 +13,7 @@ import { db } from "@/db"
 import { SignOutButton } from "@/features/auth/sign-out-button"
 import { LibraryProvider } from "@/features/library/library-provider"
 import { LibraryView } from "@/features/library/library-view"
+import { ReorganizeButton } from "@/features/library/reorganize-button"
 import { AddButton, SearchButton, SearchIconButton } from "@/features/library/triggers"
 import type { CategoryView, LinkView } from "@/features/library/types"
 import { categoriesRepo } from "@/lib/dal/categories"
@@ -158,6 +159,7 @@ export default async function AppPage() {
               </h2>
               <p className="text-sm text-muted-foreground">Todos tus enlaces de la A a la Z. Filtra por categoría o salta a una letra.</p>
             </div>
+            <ReorganizeButton />
             <LibraryView links={links} categories={categories} now={now.getTime()} />
           </section>
         ) : null}

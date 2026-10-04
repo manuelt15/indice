@@ -1,7 +1,9 @@
-import { and, eq, inArray } from "drizzle-orm"
+import { eq } from "drizzle-orm"
 import { z } from "zod"
 import { category, link } from "@/db/schema"
+import { classifyLink } from "@/lib/classify"
 import { categoryName, slugify } from "@/lib/dal/categories"
+import { ensureCategories } from "@/lib/dal/reorganize"
 import type { Db } from "@/lib/dal/types"
 import { withUser } from "@/lib/dal/with-user"
 import { MAX_BOOKMARKS } from "@/lib/import/bookmarks-html"
@@ -25,8 +27,11 @@ export type ImportSummary = { added: number; duplicates: number; invalid: number
 
 type Prepared = { url: string; normalizedUrl: string; name: string; category: string | null; tags: string[]; createdAt: Date }
 
-/** Valida cada entrada; la carpeta de primer nivel es la categoría y las subcarpetas, tags. */
-function prepare(items: ImportItem[], now: number): { valid: Prepared[]; invalid: number } {
+/**
+ * Valida cada entrada. La categoría sale de lo que es el enlace (clasificación por reglas);
+ * si no hay pistas, se usa la carpeta de primer nivel. Las carpetas se guardan como tags.
+ */
+function prepare(items: ImportItem[], now: number, ownerName?: string | null): { valid: Prepared[]; invalid: number } {
   const valid: Prepared[] = []
   let invalid = 0
   for (const item of items) {
@@ -37,13 +42,14 @@ function prepare(items: ImportItem[], now: number): { valid: Prepared[]; invalid
       continue
     }
     const folder = item.folders[0] ? categoryName.safeParse(item.folders[0]) : null
-    const tags = [...new Set(item.folders.slice(1).map((f) => f.trim().toLowerCase().slice(0, 40)).filter(Boolean))].slice(0, 10)
+    const classified = classifyLink({ url: url.data, title: name, ownerName })
+    const tags = [...new Set(item.folders.map((f) => f.trim().toLowerCase().slice(0, 40)).filter(Boolean))].slice(0, 10)
     const when = item.addedAt && item.addedAt >= MIN_DATE && item.addedAt <= now ? item.addedAt : now
     valid.push({
       url: url.data,
       normalizedUrl: normalizeUrl(url.data),
       name,
-      category: folder?.success ? folder.data : null,
+      category: classified?.category ?? (folder?.success ? folder.data : null),
       tags,
       createdAt: new Date(when),
     })
@@ -55,29 +61,29 @@ function prepare(items: ImportItem[], now: number): { valid: Prepared[]; invalid
  * Importa marcadores a la cuenta del usuario en una sola transacción.
  * Las URLs que ya tenía (o repetidas en el archivo) se saltan.
  */
-export async function importBookmarks(db: Db, userId: string, rawItems: unknown, now = Date.now()): Promise<ImportSummary> {
+export async function importBookmarks(
+  db: Db,
+  userId: string,
+  rawItems: unknown,
+  now = Date.now(),
+  ownerName?: string | null
+): Promise<ImportSummary> {
   const items = importItems.parse(rawItems)
-  const { valid, invalid } = prepare(items, now)
+  const { valid, invalid } = prepare(items, now, ownerName)
 
   // Repetidas dentro del propio archivo: se queda la primera.
   const seen = new Set<string>()
   const unique = valid.filter((v) => (seen.has(v.normalizedUrl) ? false : (seen.add(v.normalizedUrl), true)))
 
   return withUser(db, userId, async (tx) => {
-    const names = [...new Map(unique.filter((u) => u.category).map((u) => [slugify(u.category!), u.category!])).entries()]
-    const slugs = names.map(([slug]) => slug)
-    const existing = slugs.length
-      ? await tx.select().from(category).where(and(eq(category.userId, userId), inArray(category.slug, slugs)))
-      : []
-    const idBySlug = new Map(existing.map((c) => [c.slug, c.id]))
-    const toCreate = names.filter(([slug]) => !idBySlug.has(slug))
-    if (toCreate.length) {
-      const created = await tx
-        .insert(category)
-        .values(toCreate.map(([slug, name]) => ({ id: crypto.randomUUID(), userId, name, slug })))
-        .returning({ id: category.id, slug: category.slug })
-      for (const c of created) idBySlug.set(c.slug, c.id)
-    }
+    const before = new Set((await tx.select({ id: category.id }).from(category).where(eq(category.userId, userId))).map((c) => c.id))
+    const ids = await ensureCategories(
+      tx,
+      userId,
+      unique.flatMap((u) => (u.category ? [u.category] : []))
+    )
+    const idBySlug = new Map([...ids].map(([name, id]) => [slugify(name), id]))
+    const createdCategories = new Set([...ids.values()].filter((id) => !before.has(id))).size
 
     let added = 0
     for (let i = 0; i < unique.length; i += 500) {
@@ -101,6 +107,6 @@ export async function importBookmarks(db: Db, userId: string, rawItems: unknown,
       added += rows.length
     }
 
-    return { added, duplicates: valid.length - added, invalid, categories: toCreate.length }
+    return { added, duplicates: valid.length - added, invalid, categories: createdCategories }
   })
 }

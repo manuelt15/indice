@@ -9,6 +9,7 @@ import { cn } from "cn"
  */
 function SiteIcon({ src, name, className }: { src?: string | null; name: string; className?: string }) {
   const [failed, setFailed] = React.useState(false)
+  const [loaded, setLoaded] = React.useState(false)
   if (src && !failed) {
     return (
       // eslint-disable-next-line @next/next/no-img-element -- icono de 16px servido por nuestra API; next/image no aporta nada aquí
@@ -20,8 +21,14 @@ function SiteIcon({ src, name, className }: { src?: string | null; name: string;
         loading="lazy"
         decoding="async"
         onError={() => setFailed(true)}
-        // En oscuro, un fondo claro mínimo para que los favicons negros no desaparezcan.
-        className={cn("size-4 shrink-0 rounded-sm dark:bg-foreground dark:p-px", className)}
+        onLoad={() => setLoaded(true)}
+        // Si la imagen ya estaba en caché, onLoad pudo dispararse antes de hidratar.
+        ref={(el) => {
+          if (el?.complete && el.naturalWidth > 0 && !loaded) setLoaded(true)
+        }}
+        data-loaded={loaded || undefined}
+        // En oscuro, un fondo claro mínimo (solo cuando ya ha cargado) para que los favicons negros no desaparezcan.
+        className={cn("size-4 shrink-0 rounded-sm dark:data-loaded:bg-foreground dark:data-loaded:p-px", className)}
       />
     )
   }
