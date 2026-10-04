@@ -18,10 +18,14 @@ export const auth = betterAuth({
   // Sin contraseñas: solo Google, GitHub y código por correo.
   emailAndPassword: { enabled: false },
 
+  // Minimización: no guardamos la foto de perfil del proveedor (índice no la usa).
   socialProviders: {
-    google: { clientId: env.GOOGLE_CLIENT_ID, clientSecret: env.GOOGLE_CLIENT_SECRET },
-    github: { clientId: env.GITHUB_CLIENT_ID, clientSecret: env.GITHUB_CLIENT_SECRET },
+    google: { clientId: env.GOOGLE_CLIENT_ID, clientSecret: env.GOOGLE_CLIENT_SECRET, mapProfileToUser: () => ({ image: undefined }) },
+    github: { clientId: env.GITHUB_CLIENT_ID, clientSecret: env.GITHUB_CLIENT_SECRET, mapProfileToUser: () => ({ image: undefined }) },
   },
+
+  // Los tokens de Google y GitHub se guardan cifrados: una copia de la base de datos no daría acceso a esas cuentas.
+  account: { encryptOAuthTokens: true },
 
   user: {
     additionalFields: {
@@ -31,6 +35,7 @@ export const auth = betterAuth({
       cityLat: { type: "number", required: false, input: false },
       cityLng: { type: "number", required: false, input: false },
       onboardedAt: { type: "date", required: false, input: false },
+      termsAcceptedAt: { type: "date", required: false, input: false },
     },
   },
 

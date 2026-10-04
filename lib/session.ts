@@ -15,9 +15,9 @@ export async function requireUser() {
   return session.user
 }
 
-/** Como requireUser, pero si aún no ha hecho la bienvenida, manda a /bienvenida. */
+/** Como requireUser, pero si aún no ha hecho la bienvenida o aceptado los términos, manda a /bienvenida. */
 export async function requireOnboardedUser() {
   const user = await requireUser()
-  if (!user.onboardedAt) redirect("/bienvenida")
+  if (!user.onboardedAt || !user.termsAcceptedAt) redirect("/bienvenida")
   return user
 }

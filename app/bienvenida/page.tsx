@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import { redirect } from "next/navigation"
 import { Logo } from "@/components/ds/logo"
 import { ThemeToggle } from "@/components/ds/theme-toggle"
+import { AcceptTerms } from "@/features/onboarding/accept-terms"
 import { OnboardingFlow } from "@/features/onboarding/onboarding-flow"
 import { requireUser } from "@/lib/session"
 
@@ -9,7 +10,7 @@ export const metadata: Metadata = { title: "Bienvenida · índice", robots: { in
 
 export default async function BienvenidaPage() {
   const user = await requireUser()
-  if (user.onboardedAt) redirect("/app")
+  if (user.onboardedAt && user.termsAcceptedAt) redirect("/app")
   const firstName = (user.name ?? "").trim().split(/\s+/)[0] ?? ""
   return (
     <main className="mx-auto flex w-full max-w-xl flex-1 flex-col gap-10 px-5 py-12">
@@ -17,7 +18,7 @@ export default async function BienvenidaPage() {
         <Logo />
         <ThemeToggle />
       </div>
-      <OnboardingFlow initialName={firstName} />
+      {user.onboardedAt ? <AcceptTerms /> : <OnboardingFlow initialName={firstName} />}
     </main>
   )
 }

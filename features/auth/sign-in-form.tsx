@@ -1,12 +1,12 @@
 "use client"
 
 import * as React from "react"
+import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { ArrowLeftIcon, EnvelopeClosedIcon, ReloadIcon } from "@radix-ui/react-icons"
 import { GitHubLogo, GoogleLogo } from "@/components/ds/brand-icons"
 import { Frame } from "@/components/ds/frame"
 import { Button } from "@/components/ui/button"
-import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { authClient } from "@/lib/auth-client"
@@ -33,20 +33,12 @@ function messageFor(code: string | undefined): string {
 export function SignInForm() {
   const router = useRouter()
   const [step, setStep] = React.useState<Step>({ kind: "start" })
-  const [consent, setConsent] = React.useState(false)
   const [email, setEmail] = React.useState("")
   const [code, setCode] = React.useState("")
   const [error, setError] = React.useState<string | null>(null)
   const [pending, setPending] = React.useState(false)
 
-  function needConsent() {
-    if (consent) return false
-    setError("Para continuar, marca la casilla de edad y aceptación.")
-    return true
-  }
-
   async function social(provider: "google" | "github") {
-    if (needConsent()) return
     setPending(true)
     setError(null)
     const { error } = await authClient.signIn.social({ provider, callbackURL: AFTER_SIGN_IN })
@@ -58,7 +50,6 @@ export function SignInForm() {
 
   async function sendCode(event: React.FormEvent) {
     event.preventDefault()
-    if (needConsent()) return
     const target = email.trim().toLowerCase()
     if (!target) {
       setError("Escribe tu correo.")
@@ -95,6 +86,7 @@ export function SignInForm() {
     return (
       <Frame label="revisa tu correo">
         <form onSubmit={verify} className="flex flex-col gap-4">
+          <h1 className="text-2xl font-medium tracking-heading">Escribe tu código</h1>
           <p className="text-sm text-body">
             Hemos enviado un código de 6 dígitos a <span className="font-mono text-foreground">{step.email}</span>.
             Caduca en 10 minutos y tienes 5 intentos.
@@ -139,6 +131,7 @@ export function SignInForm() {
   return (
     <Frame label="entrar">
       <div className="flex flex-col gap-3">
+        <h1 className="pb-2 text-2xl font-medium tracking-heading">Entra en tu índice</h1>
         <Button type="button" variant="outline" disabled={pending} onClick={() => social("google")}>
           <GoogleLogo />
           Continuar con Google
@@ -174,12 +167,11 @@ export function SignInForm() {
 
         <p className="font-mono text-2xs text-muted-foreground">Sin contraseñas. Te llega un código de 6 dígitos.</p>
 
-        <div className="flex items-start gap-2.5 pt-1">
-          <Checkbox id="consent" checked={consent} onCheckedChange={(v) => setConsent(v === true)} />
-          <Label htmlFor="consent" variant="inline">
-            Tengo 14 años o más y acepto los términos y la política de privacidad.
-          </Label>
-        </div>
+        <p className="text-sm leading-snug text-body">
+          Al continuar confirmas que tienes 14 años o más y aceptas los{" "}
+          <Link href="/terminos" className="underline hover:text-primary">términos</Link> y la{" "}
+          <Link href="/privacidad" className="underline hover:text-primary">política de privacidad</Link>.
+        </p>
 
         {error ? (
           <p role="alert" className="text-sm text-destructive">
