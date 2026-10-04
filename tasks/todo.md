@@ -195,6 +195,7 @@ Cada fase se cierra solo cuando su criterio se cumple con evidencia (tests, lint
 - [ ] **F6 · Importar de Chrome.** Parser del HTML de marcadores y eliminación de duplicados. *Hecho cuando:* hay un test con un export real y mis 43 enlaces están dentro de mi cuenta.
 - [ ] **F7 · Clasificación.** Reglas por palabras clave y, si se decide, IA con límite. *Hecho cuando:* clasifica bien y funciona sin IA.
 - [ ] **F8 · Landing y footer.** Landing pública con datos de ejemplo y mapa mapcn pequeño. *Hecho cuando:* está revisada en móvil y escritorio, claro y oscuro, sin errores en consola.
+  - Pulir: en móvil, el mapa de calor debe abrirse mostrando la semana actual (ahora empieza en el mes más antiguo).
 - [ ] **F8b · Cumplimiento.** Páginas legales, `docs/compliance.md`, DPAs aceptados, MFA en cuentas de administración y revisión WCAG 2.2 AA (ver §4b). *Hecho cuando:* todos los entregables de §4b existen, los encargados están listados con región y DPA, y el flujo de borrado de cuenta elimina todos los datos (con test).
 - [ ] **F9 · Deploy.** Preview en Vercel; producción **solo con confirmación de Manuel**. *Hecho cuando:* la URL de preview funciona, pasan los tests y la `/security-review`, y **F8b está cerrada**.
 - [ ] **F10 · Vídeo de lanzamiento (al terminar todo).** Probar la skill [onetake](https://github.com/feitangyuan/onetake), que genera vídeos de producto en una sola toma con movimiento continuo de cámara.
