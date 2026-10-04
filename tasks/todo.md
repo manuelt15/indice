@@ -1,8 +1,19 @@
 # Plan de índice
 
 > Página para que cualquier persona guarde y organice sus marcadores, con cuenta propia y privada.
-> Estado: **planificación**. No se ha construido nada. Última actualización: 2026-10-03.
+> Estado: **en construcción**. F0 a F6 cerradas; F7 hecha, pendiente del visto bueno de Manuel. Última actualización: 2026-10-04.
 > Preview visual: https://claude.ai/artifact/H2iLStCWFxeGcyXBcDPUux (landing · entrar · bienvenida · app · /kit)
+
+---
+
+## Para retomar (otro agente o sesión)
+
+- **Rama actual:** `fase-7-clasificacion` (subida a GitHub, `manuelt15/indice`, privado). `main` llega hasta F6. No se hace push a `main` sin confirmarlo con Manuel; las fases se integran con merge cuando él lo dice.
+- **Arrancar:** `npm run dev` (puerto 3100). `.env.local` ya está completo (Neon, Better Auth, Google, GitHub); nunca imprimir sus valores.
+- **Antes de cerrar una fase:** `npm run lint`, `npm run typecheck`, `npm test`, `npm run build` en verde, y comprobar en el navegador (claro, oscuro y 375px).
+- **Probar con usuario:** `prueba@indice.test` por código; el código sale en la consola del servidor. Queda creado en la base de datos de desarrollo: borrarlo cuando haya borrado de cuenta (F8b) o pedírselo a Manuel. Los datos reales de Manuel nunca van al repo.
+- **Siguiente:** Manuel pulsa Reorganizar automáticamente y da el visto bueno a las categorías; entonces merge de F7 en `main` y empezar F8.
+- **Último arreglo (2026-10-04):** favicons que seguían rotos (huggingface, mapcn, manueltorres.pro, blobatar, autoskills, pixelcrash). El servidor ya los descargaba bien; el navegador guardaba 404 antiguos y `SiteIcon` no detectaba imágenes rotas antes de hidratar. Ahora la URL lleva versión (`lib/favicon-url.ts`, subir `FAVICON_VERSION` si vuelve a pasar) y `SiteIcon` comprueba con `decode()`.
 
 ---
 
