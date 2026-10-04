@@ -10,6 +10,7 @@ import {
   Link2Icon,
   LockClosedIcon,
   MagnifyingGlassIcon,
+  UploadIcon,
 } from "@radix-ui/react-icons"
 import { Frame } from "@/components/ds/frame"
 import { Button } from "@/components/ui/button"
@@ -75,10 +76,10 @@ export function OnboardingFlow({ initialName }: { initialName: string }) {
     setStep(3)
   }
 
-  function finish() {
+  function finish(next: "app" | "importar") {
     setError(null)
     startTransition(async () => {
-      const result = await completeOnboardingAction({ name, city })
+      const result = await completeOnboardingAction({ name, city }, next)
       if (result && !result.ok) setError(result.error)
     })
   }
@@ -190,8 +191,8 @@ export function OnboardingFlow({ initialName }: { initialName: string }) {
         <Steps current={3} />
         <h1 className="text-3xl font-medium tracking-heading text-balance">Todo listo, {name.trim()}</h1>
         <p className="text-body">
-          Podrás traer tus marcadores de Chrome en cuanto esté lista la importación. Mientras tanto, puedes empezar con tu
-          índice vacío y añadir enlaces a mano.
+          Trae tus marcadores de Chrome en un momento: cada carpeta se convierte en una categoría y se conservan las fechas. O
+          empieza con tu índice vacío y añade enlaces a mano.
         </p>
         {error ? (
           <p role="alert" className="text-sm text-destructive">
@@ -203,10 +204,15 @@ export function OnboardingFlow({ initialName }: { initialName: string }) {
             <ArrowLeftIcon />
             Atrás
           </Button>
-          <Button type="button" onClick={finish} disabled={pending}>
-            Empezar mi índice
-            <ArrowRightIcon />
-          </Button>
+          <div className="flex flex-wrap justify-end gap-2.5">
+            <Button type="button" variant="outline" onClick={() => finish("app")} disabled={pending}>
+              Empezar vacío
+            </Button>
+            <Button type="button" onClick={() => finish("importar")} disabled={pending}>
+              <UploadIcon />
+              Importar de Chrome
+            </Button>
+          </div>
         </div>
       </div>
     </Frame>

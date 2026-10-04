@@ -20,7 +20,8 @@ function SiteIcon({ src, name, className }: { src?: string | null; name: string;
         loading="lazy"
         decoding="async"
         onError={() => setFailed(true)}
-        className={cn("size-4 shrink-0 rounded-sm", className)}
+        // En oscuro, un fondo claro mínimo para que los favicons negros no desaparezcan.
+        className={cn("size-4 shrink-0 rounded-sm dark:bg-foreground dark:p-px", className)}
       />
     )
   }

@@ -1,10 +1,13 @@
 import type { Metadata } from "next"
+import Link from "next/link"
+import { UploadIcon } from "@radix-ui/react-icons"
 import { Frame, FrameFooter } from "@/components/ds/frame"
 import { GlyphBars } from "@/components/ds/glyph-bars"
 import { GlyphHeatmap, GlyphHeatmapLegend } from "@/components/ds/glyph-heatmap"
 import { Logo } from "@/components/ds/logo"
 import { SiteFooter } from "@/components/ds/site-footer"
 import { SiteIcon } from "@/components/ds/site-icon"
+import { Button } from "@/components/ui/button"
 import { ThemeToggle } from "@/components/ds/theme-toggle"
 import { db } from "@/db"
 import { SignOutButton } from "@/features/auth/sign-out-button"
@@ -68,6 +71,12 @@ export default async function AppPage() {
           <div className="flex flex-wrap gap-2.5">
             <SearchButton />
             <AddButton />
+            <Button asChild variant="ghost">
+              <Link href="/importar">
+                <UploadIcon />
+                Importar de Chrome
+              </Link>
+            </Button>
           </div>
           <p className="font-mono text-2xs text-muted-foreground">También puedes pegar una URL en cualquier sitio de la página.</p>
         </section>
@@ -75,8 +84,11 @@ export default async function AppPage() {
         {links.length === 0 ? (
           <Frame label="primeros pasos">
             <p className="text-sm text-body">
-              Pega una URL o pulsa <span className="font-mono text-foreground">N</span> para guardar tu primer enlace. La
-              importación de los marcadores de Chrome llega pronto.
+              Pega una URL o pulsa <span className="font-mono text-foreground">N</span> para guardar tu primer enlace, o{" "}
+              <Link href="/importar" className="text-primary underline underline-offset-4">
+                importa tus marcadores de Chrome
+              </Link>
+              .
             </p>
           </Frame>
         ) : (

@@ -11,6 +11,10 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  experimental: {
+    // La importación de marcadores envía hasta 5.000 enlaces ya analizados (JSON).
+    serverActions: { bodySizeLimit: "2mb" },
+  },
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
   },

@@ -17,12 +17,15 @@ export async function searchCitiesAction(query: string): Promise<CityOption[]> {
 export type OnboardingResult = { ok: false; error: string }
 
 /** Guarda la bienvenida del usuario de la sesión y lo lleva a su índice. */
-export async function completeOnboardingAction(input: OnboardingInput): Promise<OnboardingResult> {
+export async function completeOnboardingAction(
+  input: OnboardingInput,
+  next: "app" | "importar" = "app"
+): Promise<OnboardingResult> {
   const user = await requireUser()
   try {
     await profileRepo(db).completeOnboarding(user.id, input)
   } catch {
     return { ok: false, error: "No hemos podido guardar tus datos. Revisa el nombre y vuelve a intentarlo." }
   }
-  redirect("/app")
+  redirect(next === "importar" ? "/importar" : "/app")
 }

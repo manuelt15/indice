@@ -146,7 +146,7 @@ Capas: `components/ui` (primitivos de shadcn adaptados) y `components/ds` (pieza
 - **GlyphHeatmap / GlyphHeatmapLegend**: mapa de calor de 7 filas por semana con `·░▒▓█`.
 - **GlyphBars**: barras horizontales con `█░`.
 - **IndexList / IndexEntry / IndexJump**: biblioteca A–Z con puntos guía y barra de letras. Ordena con las reglas del español (la Ñ después de la N, las tildes no separan).
-- **SiteIcon**: favicon o, si no hay, la inicial.
+- **SiteIcon**: favicon o, si no hay o falla al cargar, la inicial. En oscuro lleva un fondo claro mínimo para que los favicons negros sigan viéndose.
 - **ThemeToggle**: sistema, claro u oscuro. El tema se aplica antes de pintar (`lib/theme.ts`), sin parpadeo.
 
 ### Iconos
