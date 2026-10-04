@@ -29,3 +29,15 @@ export async function completeOnboardingAction(
   }
   redirect(next === "importar" ? "/importar" : "/app")
 }
+
+/** Cuentas anteriores a la casilla de términos: la aceptan una vez y siguen a su índice. */
+export async function acceptTermsAction(accepted: boolean): Promise<OnboardingResult> {
+  const user = await requireUser()
+  if (accepted !== true) return { ok: false, error: "Para continuar, confirma que tienes 14 años o más y aceptas los términos." }
+  try {
+    await profileRepo(db).acceptTerms(user.id)
+  } catch {
+    return { ok: false, error: "No hemos podido guardarlo. Vuelve a intentarlo." }
+  }
+  redirect("/app")
+}

@@ -43,6 +43,13 @@
       "when": 1791119103793,
       "tag": "0005_favicon_cache",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1791142499830,
+      "tag": "0006_aceptacion_terminos",
+      "breakpoints": true
     }
   ]
 }

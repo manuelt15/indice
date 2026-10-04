@@ -39,6 +39,8 @@ export const user = pgTable("user", {
   cityLat: doublePrecision("city_lat"),
   cityLng: doublePrecision("city_lng"),
   onboardedAt: timestamp("onboarded_at", { withTimezone: true }),
+  // Cuándo declaró tener 14 años o más y aceptó términos y privacidad (RGPD: prueba del consentimiento).
+  termsAcceptedAt: timestamp("terms_accepted_at", { withTimezone: true }),
   ...timestamps,
 })
 

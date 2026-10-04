@@ -1,3 +1,4 @@
+import Link from "next/link"
 import { cn } from "cn"
 import { Logo } from "@/components/ds/logo"
 import { MiniMap } from "@/components/ds/mini-map"
@@ -5,9 +6,15 @@ import { cityLabel } from "@/lib/geo"
 
 type FooterPerson = { name?: string | null; city?: string | null; cityCountry?: string | null; cityLat?: number | null; cityLng?: number | null }
 
+const LINKS = [
+  { href: "/privacidad", label: "Privacidad" },
+  { href: "/terminos", label: "Términos" },
+  { href: "/aviso-legal", label: "Aviso legal" },
+]
+
 /**
  * Pie de página. Con sesión, saluda con el nombre y la ciudad del usuario (solo él lo ve).
- * Sin sesión, muestra Madrid.
+ * Sin sesión, muestra Madrid. Siempre enlaza las páginas legales; con sesión, también Ajustes.
  */
 function SiteFooter({ person, className }: { person?: FooterPerson; className?: string }) {
   const place = person?.city && person.cityCountry ? cityLabel({ name: person.city, countryCode: person.cityCountry }) : null
@@ -22,6 +29,13 @@ function SiteFooter({ person, className }: { person?: FooterPerson; className?: 
         <div className="flex flex-col gap-2">
           <Logo />
           <p className="font-mono text-xs text-muted-foreground">{line}</p>
+          <nav aria-label="Pie de página" className="mt-3 flex flex-wrap gap-x-4 gap-y-1.5 font-mono text-xs">
+            {[...LINKS, ...(person ? [{ href: "/ajustes", label: "Ajustes" }] : [])].map(({ href, label }) => (
+              <Link key={href} href={href} className="text-muted-foreground underline-offset-4 hover:text-foreground hover:underline">
+                {label}
+              </Link>
+            ))}
+          </nav>
         </div>
         <MiniMap center={center} place={hasCity ? place ?? "Tu ciudad" : "Madrid"} enabled={Boolean(process.env.CARTO_BASEMAPS_API_KEY)} />
       </div>

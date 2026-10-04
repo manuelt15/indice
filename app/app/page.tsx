@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
 import Link from "next/link"
-import { UploadIcon } from "@radix-ui/react-icons"
+import { GearIcon, UploadIcon } from "@radix-ui/react-icons"
 import { Frame, FrameFooter } from "@/components/ds/frame"
 import { GlyphBars } from "@/components/ds/glyph-bars"
 import { GlyphHeatmap, GlyphHeatmapLegend } from "@/components/ds/glyph-heatmap"
@@ -57,6 +57,11 @@ export default async function AppPage() {
           <div className="ml-auto flex items-center gap-2">
             <SearchIconButton />
             <ThemeToggle />
+            <Button asChild variant="ghost" size="icon">
+              <Link href="/ajustes" aria-label="Ajustes" title="Ajustes">
+                <GearIcon />
+              </Link>
+            </Button>
             <SignOutButton />
           </div>
         </div>

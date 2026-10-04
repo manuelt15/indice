@@ -1,7 +1,7 @@
 # Plan de índice
 
 > Página para que cualquier persona guarde y organice sus marcadores, con cuenta propia y privada.
-> Estado: **en construcción**. F0 a F8 cerradas e integradas en `main`. En curso: F8b. Última actualización: 2026-10-04.
+> Estado: **en construcción**. F0 a F8 cerradas e integradas en `main`. En curso: F8b (código hecho; faltan las tareas de Manuel). Última actualización: 2026-10-04.
 > Preview visual: https://claude.ai/artifact/H2iLStCWFxeGcyXBcDPUux (landing · entrar · bienvenida · app · /kit)
 
 - [Handover de F8, 2026-10-04](handovers-archive/HANDOVER-2026-10-04-fase-8-landing.md) — F8 cerrada el mismo día con la clave de CARTO; detalles del mapa y la CSP.
@@ -13,7 +13,7 @@
 - **Rama actual:** `fase-8b-cumplimiento` (GitHub `manuelt15/indice`, privado). `main` tiene F0 a F8. Cada fase nueva va en su rama y se integra con merge cuando Manuel lo dice. No se hace push a `main` sin confirmarlo con él.
 - **Arrancar:** `npm run dev` (puerto 3100). `.env.local` contiene Neon, Better Auth, Google, GitHub y la clave de CARTO. Nunca imprimir sus valores.
 - **Antes de cerrar una fase:** `npm run lint`, `npm run typecheck`, `npm test`, `npm run build` en verde, y comprobar en el navegador (claro, oscuro y 375px).
-- **Probar con usuario:** `prueba@indice.test` por código; el código sale en la consola del servidor. Queda creado en la base de datos de desarrollo: borrarlo cuando haya borrado de cuenta (F8b) o pedírselo a Manuel. Los datos reales de Manuel nunca van al repo.
+- **Probar con usuario:** `prueba@indice.test` por código; el código sale en la consola del servidor. Al terminar, borrarlo desde Ajustes (borrar cuenta). Los datos reales de Manuel nunca van al repo.
 - **Siguiente:** F8b (cumplimiento y borrado de cuenta), F9 y F10. Por decidir: dominio `indice.dev` y servicio de correo (Resend), necesarios antes de abrir a otras personas.
 - **F8 (2026-10-04):** landing con datos de ejemplo; mapa real de CARTO vía MapLibre adaptado de mapcn, cargado al entrar en pantalla y servido desde `/api/map` para no contactar CARTO desde el navegador; footer privado centrado en la ciudad del usuario; mapa de calor móvil abierto en la semana actual; CSP con hash del script de tema y nonce para Next. Revisada en navegador en claro, oscuro, escritorio y 375 px. CARTO cambió sus condiciones en septiembre de 2026: exige una clave propia incluso para uso personal (hasta 5 millones de teselas al mes gratis). La clave está en `.env.local` como `CARTO_BASEMAPS_API_KEY` y el mapa se ha comprobado con ella. `/api/map` solo sirve lo que pide nuestro mapa (dos estilos, sprites, fuentes y teselas hasta zoom 12) y deja que el CDN lo guarde una semana, para que nadie pueda gastar el cupo. En desarrollo la CSP permite estilos inline porque Turbopack los inyecta sin nonce; en producción sigue estricta.
 - **Último arreglo (2026-10-04):** favicons que seguían rotos (huggingface, mapcn, manueltorres.pro, blobatar, autoskills, pixelcrash). El servidor ya los descargaba bien; el navegador guardaba 404 antiguos y `SiteIcon` no detectaba imágenes rotas antes de hidratar. Ahora la URL lleva versión (`lib/favicon-url.ts`, subir `FAVICON_VERSION` si vuelve a pasar) y `SiteIcon` comprueba con `decode()`.
@@ -216,6 +216,14 @@ Cada fase se cierra solo cuando su criterio se cumple con evidencia (tests, lint
   - [x] Verificar el mapa con clave CARTO propia y repetir lint, tipos, tests, build y navegador en escritorio, 375px, claro y oscuro. *Cerrada el 2026-10-04:* mapa sin marca de agua en claro y oscuro, la clave nunca llega al navegador, 143 tests.
   - [x] Marco de recientes de la landing con enlaces de ejemplo (antes estaba vacío).
 - [ ] **F8b · Cumplimiento.** Páginas legales, `docs/compliance.md`, DPAs aceptados, MFA en cuentas de administración y revisión WCAG 2.2 AA (ver §4b). *Hecho cuando:* todos los entregables de §4b existen, los encargados están listados con región y DPA, y el flujo de borrado de cuenta elimina todos los datos (con test).
+  - [x] Migración: `user.terms_accepted_at`. Casilla obligatoria "Tengo 14 años o más y acepto los términos y la política de privacidad" en el paso 2 de la bienvenida. Las cuentas existentes la aceptan una vez antes de entrar en `/app` (con OAuth no se distingue registro de entrada, por eso va en la bienvenida). `/entrar` enlaza términos y privacidad.
+  - [x] Páginas `/privacidad`, `/terminos`, `/aviso-legal` con un componente de página legal; enlaces en el footer (y Ajustes con sesión).
+  - [x] `/ajustes`: editar nombre y ciudad (rectificación), exportar todo en JSON (portabilidad) y borrar la cuenta escribiendo "borrar" (supresión).
+  - [x] `lib/dal/account.ts` con `exportData` y `deleteAccount` (borra usuario, sesiones, cuentas OAuth, categorías, enlaces y códigos de acceso de su correo). Tests: no queda ninguna fila de A en ninguna tabla y B queda intacto.
+  - [x] `docs/compliance.md`: registro de tratamientos, encargados con región y DPA, retención, brechas (AEPD en 72 h) y plan de incidentes.
+  - [x] Revisión WCAG 2.2 AA de las pantallas principales (teclado, foco, contraste, etiquetas, reduced-motion). Arreglado: `/entrar` sin `h1` y el gris de metadatos (#777373 a #6c6868) sobre fondos grises.
+  - [x] Minimización: no se guarda la foto de perfil de Google o GitHub, los tokens OAuth se guardan cifrados y la migración 0006 borra los anteriores.
+  - [ ] *Manuel:* MFA en GitHub, Vercel, Neon, Google Cloud y CARTO; aceptar los DPA de Vercel y Neon (se aceptan con sus términos; comprobar en sus paneles).
 - [ ] **F9 · Deploy.** Preview en Vercel (con `CARTO_BASEMAPS_API_KEY` en sus variables de entorno); producción **solo con confirmación de Manuel**. *Hecho cuando:* la URL de preview funciona, pasan los tests y la `/security-review`, y **F8b está cerrada**.
 - [ ] **F10 · Vídeo de lanzamiento (al terminar todo).** Probar la skill [onetake](https://github.com/feitangyuan/onetake), que genera vídeos de producto en una sola toma con movimiento continuo de cámara.
   - **Funcionamiento:** es local y no usa APIs de pago. Necesita Python 3 (playwright, numpy, scipy, Pillow, matplotlib, opencv), ffmpeg y node.

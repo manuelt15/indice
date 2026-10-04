@@ -41,7 +41,7 @@ Tres capas, todas en `app/globals.css`:
 | `--palette-bg-100` | #fbfbfb | Paleta de Manuel |
 | `--palette-bg-200` | #f1f1f1 | Paleta de Manuel |
 | `--palette-bg-300` | #c8c8c8 | Paleta de Manuel |
-| `--palette-gray-mute` | #777373 | Derivado: metadatos legibles (el salto entre #4b4848 y #bebebe era demasiado grande) |
+| `--palette-gray-mute` | #6c6868 | Derivado: metadatos legibles. Pasa 4,5:1 sobre `background`, `muted` y `secondary` (antes #777373, que fallaba sobre los grises de hover) |
 | `--palette-gray-line` | #a3a0a0 | Derivado: líneas punteadas visibles (#c8c8c8 casi no se ve) |
 | `--palette-gray-selected` | #e9e9e9 | Derivado: estado seleccionado |
 | `--palette-dark-100/200/300` | #121111 · #191818 · #222020 | Derivados: negros cálidos del modo oscuro |
@@ -72,7 +72,7 @@ Tres capas, todas en `app/globals.css`:
 
 **Peligro.** El acento ya es rojo, así que una acción destructiva no se distingue por el color: se distingue por el texto ("Borrar mi cuenta y todos mis datos"), por el estilo `destructive` (borde punteado, sin relleno) y por una confirmación explícita.
 
-**Contraste.** `primary` sobre `background` y `primary-foreground` sobre `primary` superan 4,5:1 en los dos temas. `muted-foreground` también. `faint` no, y por eso no se usa para texto.
+**Contraste.** `primary` sobre `background` y `primary-foreground` sobre `primary` superan 4,5:1 en los dos temas. `muted-foreground` también, incluso sobre `muted` y `secondary`. `faint` no, y por eso no se usa para texto.
 
 ## Typography
 
