@@ -23,7 +23,7 @@ Documento interno. Guía técnica, no asesoría legal. Marcos de referencia usad
 
 | Proveedor | Para qué | Región de los datos | Garantía | DPA |
 |---|---|---|---|---|
-| Vercel Inc. | Alojamiento y funciones | Frankfurt (`fra1`) | Data Privacy Framework (certificado) | **Solo en Pro y Enterprise** (vercel.com/legal/dpa, vigente desde el 31-3-2026: «applies … for Customers who are on Enterprise and Pro plans»). En Hobby no hay DPA, el uso debe ser personal o no comercial y Vercel puede usar el contenido para entrenar IA salvo que se desactive en los ajustes del equipo. **Decidir antes de abrir a otras personas: pasar a Pro.** |
+| Vercel Inc. | Alojamiento y funciones | Frankfurt (`fra1`) | Data Privacy Framework (certificado) | **Solo en Pro y Enterprise** (vercel.com/legal/dpa, vigente desde el 31-3-2026: «applies … for Customers who are on Enterprise and Pro plans»). En Hobby no hay DPA, el uso debe ser personal o no comercial y Vercel puede usar el contenido para entrenar IA salvo que se desactive en los ajustes del equipo. **Decidido (4-10-2026): seguir en Hobby mientras índice sea gratuito y sin ánimo de lucro.** La política de privacidad lo explica y se compromete a pasar a un plan con DPA si hay uso comercial. |
 | Neon (Databricks) | Base de datos Postgres | AWS Frankfurt (`eu-central-1`) | Data Privacy Framework | Incluido automáticamente en sus términos para todos los clientes, también el plan gratis. Copia firmable en neon.com/dpa; subencargados en neon.com/subprocessors |
 | Google / GitHub | Inicio de sesión, solo si la persona lo elige | Sus regiones | Data Privacy Framework | La persona usuaria es cliente directa suya; índice solo recibe correo y nombre |
 | Servicio de correo (pendiente, previsiblemente Resend) | Enviar códigos de acceso | Elegir región UE si existe | Por decidir | **Aceptar DPA y añadirlo a la política de privacidad antes de activarlo** |
@@ -78,6 +78,7 @@ Registro de incidentes: ninguno.
 
 ## 7. Controles de cuentas de administración (Manuel)
 
+- [ ] **Desactivar en Vercel el uso del contenido para entrenar IA** (ajustes del equipo). La política de privacidad lo afirma: obligatorio antes de publicar (F9).
 - [ ] MFA en GitHub (`manuelt15`).
 - [ ] MFA en Vercel.
 - [ ] MFA en Neon.

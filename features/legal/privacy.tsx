@@ -53,15 +53,22 @@ export function Privacy() {
       </LegalSection>
 
       <LegalSection label="proveedores" title="Con quién se comparten">
-        <p>Solo con los proveedores que hacen funcionar índice, con un contrato de encargo de tratamiento (DPA):</p>
+        <p>Solo con los proveedores que hacen funcionar índice:</p>
         <LegalList>
           <li>
-            <strong className="font-medium text-foreground">Vercel</strong> (alojamiento de la web). Las funciones se ejecutan en
-            Frankfurt (Alemania). Empresa de EE. UU. adherida al Marco de Privacidad de Datos UE-EE. UU.
+            <strong className="font-medium text-foreground">Neon</strong> (base de datos). Aquí se guardan tu cuenta y tus enlaces,
+            en Frankfurt (Alemania). Tenemos con Neon un contrato de encargo de tratamiento (DPA). Empresa de EE. UU. que se
+            acoge al Marco de Privacidad de Datos UE-EE. UU.
           </li>
           <li>
-            <strong className="font-medium text-foreground">Neon</strong> (base de datos), con los datos almacenados en Frankfurt
-            (Alemania). Empresa de EE. UU. adherida al Marco de Privacidad de Datos UE-EE. UU.
+            <strong className="font-medium text-foreground">Vercel</strong> (alojamiento de la web). Tus peticiones pasan por sus
+            servidores, que las atienden en Frankfurt (Alemania), y conserva registros técnicos durante poco tiempo. Vercel está
+            certificada en el Marco de Privacidad de Datos UE-EE. UU. Mientras índice sea un proyecto gratuito y sin ánimo de
+            lucro usamos su plan gratuito, que no incluye contrato de encargo: Vercel trata esos datos según sus propios{" "}
+            <LegalLink href="https://vercel.com/legal/terms">términos</LegalLink> y su{" "}
+            <LegalLink href="https://vercel.com/legal/privacy-policy">política de privacidad</LegalLink>. Hemos desactivado que
+            Vercel use nuestro contenido para entrenar modelos de inteligencia artificial. Si índice pasa a tener uso comercial,
+            nos cambiaremos a un plan con contrato de encargo y actualizaremos esta política.
           </li>
           <li>
             <strong className="font-medium text-foreground">Google o GitHub</strong>, solo si eliges entrar con ellos: confirman

@@ -28,7 +28,7 @@
 - [x] **Clasificación:** solo reglas por palabras clave (gratis). IA opcional más adelante con tope de gasto.
 - [x] **Geocodificación:** Photon (OpenStreetMap, komoot, servidores en Alemania) desde el servidor mientras se busca, con lista de ciudades frecuentes de respaldo. Encargado a listar en la política de privacidad.
 - [x] **Mapa:** CARTO plan gratis con atribución visible; límites a revisar en F8. En la app, mapa real con mapcn (no el esquema del preview).
-- [x] **Hosting:** Vercel Hobby mientras sea gratis y personal; Pro si algún día es comercial.
+- [x] **Hosting:** Vercel Hobby mientras sea gratis y sin ánimo de lucro, aunque lo usen más personas (decidido el 2026-10-04). Hobby no incluye DPA: la política de privacidad lo explica. Pro (con DPA) si algún día es comercial.
 - [x] **Skills:** instalar taste-skill y emilkowalski/skill en el repo.
 - [x] **Titular legal:** Manuel Torres, persona física. Contacto: manueltorres1512@gmail.com. Sin dirección mientras no haya actividad económica.
 - [x] **Región de datos:** UE (Neon Frankfurt, funciones de Vercel en `fra1`).
@@ -224,7 +224,7 @@ Cada fase se cierra solo cuando su criterio se cumple con evidencia (tests, lint
   - [x] Revisión WCAG 2.2 AA de las pantallas principales (teclado, foco, contraste, etiquetas, reduced-motion). Arreglado: `/entrar` sin `h1` y el gris de metadatos (#777373 a #6c6868) sobre fondos grises.
   - [x] Minimización: no se guarda la foto de perfil de Google o GitHub, los tokens OAuth se guardan cifrados y la migración 0006 borra los anteriores.
   - [ ] *Manuel:* MFA en GitHub, Vercel, Neon, Google Cloud y CARTO; aceptar los DPA de Vercel y Neon (se aceptan con sus términos; comprobar en sus paneles).
-- [ ] **F9 · Deploy.** Preview en Vercel (con `CARTO_BASEMAPS_API_KEY` en sus variables de entorno); producción **solo con confirmación de Manuel**. *Hecho cuando:* la URL de preview funciona, pasan los tests y la `/security-review`, y **F8b está cerrada**.
+- [ ] **F9 · Deploy.** Antes de nada, desactivar en Vercel el entrenamiento de IA con nuestro contenido (la política de privacidad lo afirma). Preview en Vercel (con `CARTO_BASEMAPS_API_KEY` en sus variables de entorno); producción **solo con confirmación de Manuel**. *Hecho cuando:* la URL de preview funciona, pasan los tests y la `/security-review`, y **F8b está cerrada**.
 - [ ] **F10 · Vídeo de lanzamiento (al terminar todo).** Probar la skill [onetake](https://github.com/feitangyuan/onetake), que genera vídeos de producto en una sola toma con movimiento continuo de cámara.
   - **Funcionamiento:** es local y no usa APIs de pago. Necesita Python 3 (playwright, numpy, scipy, Pillow, matplotlib, opencv), ffmpeg y node.
   - **Licencia:** PolyForm Noncommercial. Vale para uso personal; si índice llegara a ser comercial, el vídeo no podría usarse así.
