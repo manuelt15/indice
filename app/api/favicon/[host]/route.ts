@@ -21,7 +21,9 @@ export async function GET(request: Request, ctx: { params: Promise<{ host: strin
       "Content-Type": icon.contentType,
       "Cache-Control": "private, max-age=86400",
       "X-Content-Type-Options": "nosniff",
-      "Content-Security-Policy": "default-src 'none'; sandbox",
+      // Imprescindible para SVG: aunque se abra la URL directamente, ningún script se ejecuta.
+      "Content-Security-Policy": "default-src 'none'; style-src 'unsafe-inline'; sandbox",
+      "Cross-Origin-Resource-Policy": "same-origin",
     },
   })
 }

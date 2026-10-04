@@ -33,8 +33,10 @@ describe("sniffIconType", () => {
     expect(sniffIconType(new Uint8Array([0, 0, 1, 0, 1, 0]))).toBe("image/x-icon")
   })
 
-  it("rechaza SVG y HTML aunque digan ser imagen", () => {
-    expect(sniffIconType(new TextEncoder().encode("<svg onload=alert(1)>"))).toBeNull()
-    expect(sniffIconType(new TextEncoder().encode("<!doctype html>"))).toBeNull()
+  it("reconoce SVG (se sirve con CSP sandbox) y rechaza HTML aunque diga ser imagen", () => {
+    expect(sniffIconType(new TextEncoder().encode('<svg xmlns="http://www.w3.org/2000/svg"></svg>'))).toBe("image/svg+xml")
+    expect(sniffIconType(new TextEncoder().encode('<?xml version="1.0"?>\n<svg></svg>'))).toBe("image/svg+xml")
+    expect(sniffIconType(new TextEncoder().encode("<!doctype html><svg></svg>"))).toBeNull()
+    expect(sniffIconType(new TextEncoder().encode("<html><body>hola</body></html>"))).toBeNull()
   })
 })

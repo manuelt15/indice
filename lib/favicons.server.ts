@@ -9,7 +9,8 @@ import { safeFetch } from "@/lib/net/safe-fetch"
 
 const FRESH_MS = 7 * 24 * 60 * 60 * 1000
 const MISSING_RETRY_MS = 24 * 60 * 60 * 1000
-const MAX_ICON_BYTES = 100 * 1024
+// Algunos .ico llevan varios tamaños dentro (huggingface.co pesa ~200 KB).
+const MAX_ICON_BYTES = 512 * 1024
 
 const HOSTNAME = /^(?=.{1,253}$)(?!-)[a-z0-9-]{1,63}(?<!-)(\.(?!-)[a-z0-9-]{1,63}(?<!-))+$/
 
