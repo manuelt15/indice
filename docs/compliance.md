@@ -23,8 +23,8 @@ Documento interno. Guía técnica, no asesoría legal. Marcos de referencia usad
 
 | Proveedor | Para qué | Región de los datos | Garantía | DPA |
 |---|---|---|---|---|
-| Vercel Inc. | Alojamiento y funciones | Frankfurt (`fra1`) | Data Privacy Framework | Incluido en sus términos. **Comprobar aceptado en el panel antes de F9** |
-| Neon (Databricks) | Base de datos Postgres | AWS Frankfurt (`eu-central-1`) | Data Privacy Framework | Incluido en sus términos. **Comprobar en el panel** |
+| Vercel Inc. | Alojamiento y funciones | Frankfurt (`fra1`) | Data Privacy Framework (certificado) | **Solo en Pro y Enterprise** (vercel.com/legal/dpa, vigente desde el 31-3-2026: «applies … for Customers who are on Enterprise and Pro plans»). En Hobby no hay DPA, el uso debe ser personal o no comercial y Vercel puede usar el contenido para entrenar IA salvo que se desactive en los ajustes del equipo. **Decidir antes de abrir a otras personas: pasar a Pro.** |
+| Neon (Databricks) | Base de datos Postgres | AWS Frankfurt (`eu-central-1`) | Data Privacy Framework | Incluido automáticamente en sus términos para todos los clientes, también el plan gratis. Copia firmable en neon.com/dpa; subencargados en neon.com/subprocessors |
 | Google / GitHub | Inicio de sesión, solo si la persona lo elige | Sus regiones | Data Privacy Framework | La persona usuaria es cliente directa suya; índice solo recibe correo y nombre |
 | Servicio de correo (pendiente, previsiblemente Resend) | Enviar códigos de acceso | Elegir región UE si existe | Por decidir | **Aceptar DPA y añadirlo a la política de privacidad antes de activarlo** |
 
@@ -45,7 +45,7 @@ Servicios consultados desde el servidor sin datos identificativos (no son encarg
 | Códigos de acceso | 10 minutos, guardados con hash |
 | Límites de uso (IP) | Ventana de 1 a 10 minutos; la fila se reutiliza |
 | Caché de favicons | 7 días; no contiene datos de personas |
-| Cuenta borrada | Al momento en la base de datos (`deleteAccount`, con test). Copias de seguridad de Neon: según el periodo de historial del plan, como máximo 30 días (**verificar el valor del plan en el panel**) |
+| Cuenta borrada | Al momento en la base de datos (`deleteAccount`, con test). Historial de restauración de Neon: 6 horas en el plan gratis (7 días en Launch, 30 en Scale). Neon no publica cuánto guarda en copias internas: la política dice «como máximo 30 días», pendiente de confirmar con su soporte |
 
 ## 4. Medidas de seguridad
 
