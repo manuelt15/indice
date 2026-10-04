@@ -122,6 +122,7 @@ Estructura de DESIGN.md: igual que la guía de Vercel/Geist que pasó Manuel (Ov
 | Contraseñas | No se guardan: OAuth y código por correo |
 | Fuerza bruta del código | Caduca en 10 min, 5 intentos máximo, límite de envíos por correo e IP, guardado cifrado |
 | XSS | zod en todas las entradas; solo URLs `http`/`https`; `rel="noopener noreferrer"`; CSP y cabeceras de seguridad |
+| CSP con el script de tema | El script que aplica el tema antes de pintar (`lib/theme.ts`) es inline: la CSP debe permitirlo con hash o nonce, nunca con `unsafe-inline` |
 | SSRF (favicons, títulos, geocodificación) | Bloqueo de IPs privadas y locales, timeout, límite de tamaño, sin redirecciones a hosts internos |
 | HTML de importación malicioso | Límite de tamaño; se parsea sin renderizarlo nunca |
 | IA | Sin herramientas; respuesta validada con esquema cerrado (categoría de una lista); límite diario por usuario |
@@ -186,7 +187,7 @@ Cada fase se cierra solo cuando su criterio se cumple con evidencia (tests, lint
 
 - [x] **F0 · Decisiones.** Cerradas salvo dominio y correo (no bloquean F1–F7).
 - [x] **F1 · Base.** Repo, Next.js 16.3, Tailwind 4, shadcn (`radix-nova`, iconos Radix), `@shadcn/lint` con las 6 reglas, vitest y skills. *Cerrada el 2026-10-04:* `lint`, `typecheck`, `test` y `build` en verde; `npm audit --omit=dev` sin vulnerabilidades (las de desarrollo vienen de `braces` en herramientas de build).
-- [ ] **F2 · Sistema de diseño.** DESIGN.md, tokens y componentes `ds` + `/kit` + logo y favicon. *Hecho cuando:* `/kit` muestra todo en claro y oscuro y el lint pasa sin excepciones.
+- [x] **F2 · Sistema de diseño.** DESIGN.md, tokens en 3 capas (`app/globals.css`), componentes `ui` adaptados y `ds` propios, `/kit`, logo y favicon del globo, tema claro/oscuro/sistema sin parpadeo. *Cerrada el 2026-10-04:* `/kit` revisado en claro, oscuro y a 375px sin desbordes ni errores de consola; lint sin excepciones; 11 tests.
 - [ ] **F3 · Datos, auth y seguridad.** Base de datos, Better Auth (Google, GitHub, código), `lib/dal` y tests de aislamiento. *Hecho cuando:* los tests de seguridad de §4 están en verde.
 - [ ] **F4 · Onboarding.** Bienvenida, nombre y ciudad (geocodificada en servidor) y primer paso. *Hecho cuando:* un usuario nuevo siempre lo ve y uno que lo completó nunca; nombre y ciudad salen en la app y en el footer.
 - [ ] **F5 · App.** Resumen, biblioteca A–Z, categorías, ⌘K, pegar URL, fijar y borrar; favicons originales vía servidor con caché. *Hecho cuando:* el flujo completo está probado en el navegador.
