@@ -75,7 +75,7 @@ db/              Esquema y migraciones
 
 ## Despliegue
 
-Vercel despliega `main` en producción. Las variables de entorno están solo en Production y la base de datos de producción es la rama `production` de Neon. Una limpieza diaria (`/api/cron/limpieza`, protegida con `CRON_SECRET`) borra las sesiones, los códigos y los límites de uso caducados.
+Vercel solo despliega `main`, en producción; las demás ramas no se construyen (`vercel.json`). Las variables de entorno están solo en Production y la base de datos de producción es la rama `production` de Neon. Una limpieza diaria (`/api/cron/limpieza`, protegida con `CRON_SECRET`) borra las sesiones, los códigos y los límites de uso caducados.
 
 ## Estado
 
