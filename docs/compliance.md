@@ -45,7 +45,7 @@ Servicios consultados desde el servidor sin datos identificativos (no son encarg
 | Códigos de acceso | 10 minutos, guardados con hash |
 | Límites de uso (IP) | Ventana de 1 a 10 minutos; la fila se reutiliza |
 | Caché de favicons | 7 días; no contiene datos de personas |
-| Cuenta borrada | Al momento en la base de datos (`deleteAccount`, con test). Historial de restauración de Neon: 6 horas en el plan gratis (7 días en Launch, 30 en Scale). Neon no publica cuánto guarda en copias internas: la política dice «como máximo 30 días», pendiente de confirmar con su soporte |
+| Cuenta borrada | Al momento en la base de datos (`deleteAccount`, con test). Historial de restauración de Neon: 6 horas en el plan gratis (7 días en Launch, 30 en Scale). Neon no publica cuánto guarda en copias internas: la política dice «como máximo 30 días». Pendiente: preguntar a su soporte un plazo fijo |
 
 ## 4. Medidas de seguridad
 
@@ -78,7 +78,7 @@ Registro de incidentes: ninguno.
 
 ## 7. Controles de cuentas de administración (Manuel)
 
-- [ ] **Desactivar en Vercel el uso del contenido para entrenar IA** (ajustes del equipo). La política de privacidad lo afirma: obligatorio antes de publicar (F9).
+- [ ] **Desactivar en Vercel el uso del contenido para entrenar IA** (ajustes del equipo). Pendiente; cuando esté hecho, añadirlo a la política de privacidad (sección de proveedores, Vercel).
 - [ ] MFA en GitHub (`manuelt15`).
 - [ ] MFA en Vercel.
 - [ ] MFA en Neon.

@@ -1,7 +1,7 @@
 # Plan de índice
 
 > Página para que cualquier persona guarde y organice sus marcadores, con cuenta propia y privada.
-> Estado: **en construcción**. F0 a F8 cerradas e integradas en `main`. En curso: F8b (código hecho; faltan las tareas de Manuel). Última actualización: 2026-10-04.
+> Estado: **en construcción**. F0 a F8 cerradas e integradas en `main`. F8b integrada en `main` (código hecho; quedan tareas de Manuel). Siguiente: F9. Última actualización: 2026-10-04.
 > Preview visual: https://claude.ai/artifact/H2iLStCWFxeGcyXBcDPUux (landing · entrar · bienvenida · app · /kit)
 
 - [Handover de F8, 2026-10-04](handovers-archive/HANDOVER-2026-10-04-fase-8-landing.md) — F8 cerrada el mismo día con la clave de CARTO; detalles del mapa y la CSP.
@@ -10,7 +10,7 @@
 
 ## Para retomar (otro agente o sesión)
 
-- **Rama actual:** `fase-8b-cumplimiento` (GitHub `manuelt15/indice`, privado). `main` tiene F0 a F8. Cada fase nueva va en su rama y se integra con merge cuando Manuel lo dice. No se hace push a `main` sin confirmarlo con él.
+- **Rama actual:** `main` (GitHub `manuelt15/indice`, privado), con F0 a F8b. F9 irá en `fase-9-deploy`. Cada fase nueva va en su rama y se integra con merge cuando Manuel lo dice. No se hace push a `main` sin confirmarlo con él.
 - **Arrancar:** `npm run dev` (puerto 3100). `.env.local` contiene Neon, Better Auth, Google, GitHub y la clave de CARTO. Nunca imprimir sus valores.
 - **Antes de cerrar una fase:** `npm run lint`, `npm run typecheck`, `npm test`, `npm run build` en verde, y comprobar en el navegador (claro, oscuro y 375px).
 - **Probar con usuario:** `prueba@indice.test` por código; el código sale en la consola del servidor. Al terminar, borrarlo desde Ajustes (borrar cuenta). Los datos reales de Manuel nunca van al repo.
@@ -224,7 +224,7 @@ Cada fase se cierra solo cuando su criterio se cumple con evidencia (tests, lint
   - [x] Revisión WCAG 2.2 AA de las pantallas principales (teclado, foco, contraste, etiquetas, reduced-motion). Arreglado: `/entrar` sin `h1` y el gris de metadatos (#777373 a #6c6868) sobre fondos grises.
   - [x] Minimización: no se guarda la foto de perfil de Google o GitHub, los tokens OAuth se guardan cifrados y la migración 0006 borra los anteriores.
   - [ ] *Manuel:* MFA en GitHub, Vercel, Neon, Google Cloud y CARTO; aceptar los DPA de Vercel y Neon (se aceptan con sus términos; comprobar en sus paneles).
-- [ ] **F9 · Deploy.** Antes de nada, desactivar en Vercel el entrenamiento de IA con nuestro contenido (la política de privacidad lo afirma). Preview en Vercel (con `CARTO_BASEMAPS_API_KEY` en sus variables de entorno); producción **solo con confirmación de Manuel**. *Hecho cuando:* la URL de preview funciona, pasan los tests y la `/security-review`, y **F8b está cerrada**.
+- [ ] **F9 · Deploy.** Pendiente de Manuel: desactivar en Vercel el entrenamiento de IA con nuestro contenido y, después, decirlo en la política de privacidad; preguntar al soporte de Neon un plazo fijo de borrado de copias. Preview en Vercel (con `CARTO_BASEMAPS_API_KEY` en sus variables de entorno); producción **solo con confirmación de Manuel**. *Hecho cuando:* la URL de preview funciona, pasan los tests y la `/security-review`, y **F8b está cerrada**.
 - [ ] **F10 · Vídeo de lanzamiento (al terminar todo).** Probar la skill [onetake](https://github.com/feitangyuan/onetake), que genera vídeos de producto en una sola toma con movimiento continuo de cámara.
   - **Funcionamiento:** es local y no usa APIs de pago. Necesita Python 3 (playwright, numpy, scipy, Pillow, matplotlib, opencv), ffmpeg y node.
   - **Licencia:** PolyForm Noncommercial. Vale para uso personal; si índice llegara a ser comercial, el vídeo no podría usarse así.

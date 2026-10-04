@@ -66,8 +66,7 @@ export function Privacy() {
             certificada en el Marco de Privacidad de Datos UE-EE. UU. Mientras índice sea un proyecto gratuito y sin ánimo de
             lucro usamos su plan gratuito, que no incluye contrato de encargo: Vercel trata esos datos según sus propios{" "}
             <LegalLink href="https://vercel.com/legal/terms">términos</LegalLink> y su{" "}
-            <LegalLink href="https://vercel.com/legal/privacy-policy">política de privacidad</LegalLink>. Hemos desactivado que
-            Vercel use nuestro contenido para entrenar modelos de inteligencia artificial. Si índice pasa a tener uso comercial,
+            <LegalLink href="https://vercel.com/legal/privacy-policy">política de privacidad</LegalLink>. Si índice pasa a tener uso comercial,
             nos cambiaremos a un plan con contrato de encargo y actualizaremos esta política.
           </li>
           <li>
