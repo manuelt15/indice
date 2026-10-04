@@ -9,6 +9,8 @@ const schema = z.object({
   GOOGLE_CLIENT_SECRET: z.string().min(1),
   GITHUB_CLIENT_ID: z.string().min(1),
   GITHUB_CLIENT_SECRET: z.string().min(1),
+  // Vercel Cron la envía como "Authorization: Bearer …". Sin ella, la limpieza no se ejecuta.
+  CRON_SECRET: z.string().min(32, "CRON_SECRET debe tener al menos 32 caracteres.").optional(),
 })
 
 /** Variables de entorno del servidor, validadas una vez. Nunca se exponen al navegador. */

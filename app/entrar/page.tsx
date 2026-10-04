@@ -3,6 +3,7 @@ import { redirect } from "next/navigation"
 import { Logo } from "@/components/ds/logo"
 import { ThemeToggle } from "@/components/ds/theme-toggle"
 import { SignInForm } from "@/features/auth/sign-in-form"
+import { emailCodesEnabled } from "@/lib/auth"
 import { getSession } from "@/lib/session"
 
 export const metadata: Metadata = { title: "Entrar · índice" }
@@ -15,7 +16,7 @@ export default async function EntrarPage() {
         <Logo />
         <ThemeToggle />
       </div>
-      <SignInForm />
+      <SignInForm emailCodes={emailCodesEnabled} />
       <p className="font-mono text-2xs text-muted-foreground">Sin cookies de seguimiento. Solo una cookie técnica para tu sesión.</p>
     </main>
   )
