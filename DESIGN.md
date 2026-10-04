@@ -143,11 +143,12 @@ Capas: `components/ui` (primitivos de shadcn adaptados) y `components/ds` (pieza
 ### `components/ds`
 - **Globe / Logo**: marca de índice. Tamaños `sm`, `md`, `lg`, `xl`.
 - **Frame / FrameFooter**: marco punteado con cruces y etiqueta `[ … ]`.
-- **GlyphHeatmap / GlyphHeatmapLegend**: mapa de calor de 7 filas por semana con `·░▒▓█`.
+- **GlyphHeatmap / GlyphHeatmapLegend**: mapa de calor de 7 filas por semana con `·░▒▓█`. En móvil abre mostrando la semana actual.
 - **GlyphBars**: barras horizontales con `█░`.
 - **IndexList / IndexEntry / IndexJump**: biblioteca A–Z con puntos guía y barra de letras. Ordena con las reglas del español (la Ñ después de la N, las tildes no separan).
 - **SiteIcon**: favicon o, si no hay o falla al cargar, la inicial. En oscuro lleva un fondo claro mínimo para que los favicons negros sigan viéndose.
 - **ThemeToggle**: sistema, claro u oscuro. El tema se aplica antes de pintar (`lib/theme.ts`), sin parpadeo.
+- **MiniMap**: mapa CARTO de 280 px en el footer, adaptado de mapcn. Carga al entrar en pantalla, cambia con el tema y muestra atribución visible. Las teselas se sirven desde el servidor.
 
 ### Iconos
 Solo **Radix Icons** (`@radix-ui/react-icons`, 15×15, `currentColor`). Excepciones: el globo (propio) y los logos oficiales de Google y GitHub en el login.

@@ -38,6 +38,8 @@ const eslintConfig = defineConfig([
     "next-env.d.ts",
     // Maqueta HTML de referencia, no es código de la app.
     "docs/**",
+    // Worker distribuido por MapLibre, servido tal cual desde nuestro origen.
+    "public/maplibre-gl-*.mjs",
   ]),
 ]);
 
