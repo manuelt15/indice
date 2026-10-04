@@ -10,7 +10,7 @@
 
 ## Para retomar (otro agente o sesión)
 
-- **Rama actual:** `main` (GitHub `manuelt15/indice`, privado), con F0 a F8b. F9 irá en `fase-9-deploy`. Cada fase nueva va en su rama y se integra con merge cuando Manuel lo dice. No se hace push a `main` sin confirmarlo con él.
+- **Rama actual:** `main` (GitHub `manuelt15/indice`, privado), con F0 a F8b y la preparación de F9 (región, cron, ramas de Neon). Falta que Manuel cree el proyecto en Vercel; los ajustes que salgan del deploy van en una rama nueva. Cada fase nueva va en su rama y se integra con merge cuando Manuel lo dice. No se hace push a `main` sin confirmarlo con él.
 - **Arrancar:** `npm run dev` (puerto 3100). `.env.local` contiene Neon, Better Auth, Google, GitHub y la clave de CARTO. Nunca imprimir sus valores.
 - **Antes de cerrar una fase:** `npm run lint`, `npm run typecheck`, `npm test`, `npm run build` en verde, y comprobar en el navegador (claro, oscuro y 375px).
 - **Probar con usuario:** `prueba@indice.test` por código; el código sale en la consola del servidor. Al terminar, borrarlo desde Ajustes (borrar cuenta). Los datos reales de Manuel nunca van al repo.
