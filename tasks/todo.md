@@ -1,7 +1,7 @@
 # Plan de índice
 
 > Página para que cualquier persona guarde y organice sus marcadores, con cuenta propia y privada.
-> Estado: **en construcción**. F0 a F8 cerradas en la rama `fase-8-landing`, pendiente de integrar en `main`. Siguiente: F8b. Última actualización: 2026-10-04.
+> Estado: **en construcción**. F0 a F8 cerradas e integradas en `main`. En curso: F8b. Última actualización: 2026-10-04.
 > Preview visual: https://claude.ai/artifact/H2iLStCWFxeGcyXBcDPUux (landing · entrar · bienvenida · app · /kit)
 
 - [Handover de F8, 2026-10-04](handovers-archive/HANDOVER-2026-10-04-fase-8-landing.md) — F8 cerrada el mismo día con la clave de CARTO; detalles del mapa y la CSP.
@@ -10,7 +10,7 @@
 
 ## Para retomar (otro agente o sesión)
 
-- **Rama actual:** `fase-8-landing` (GitHub `manuelt15/indice`, privado), con F8 terminada; falta integrarla en `main` cuando Manuel lo diga. Cada fase nueva va en su rama y se integra con merge cuando Manuel lo dice. No se hace push a `main` sin confirmarlo con él.
+- **Rama actual:** `fase-8b-cumplimiento` (GitHub `manuelt15/indice`, privado). `main` tiene F0 a F8. Cada fase nueva va en su rama y se integra con merge cuando Manuel lo dice. No se hace push a `main` sin confirmarlo con él.
 - **Arrancar:** `npm run dev` (puerto 3100). `.env.local` contiene Neon, Better Auth, Google, GitHub y la clave de CARTO. Nunca imprimir sus valores.
 - **Antes de cerrar una fase:** `npm run lint`, `npm run typecheck`, `npm test`, `npm run build` en verde, y comprobar en el navegador (claro, oscuro y 375px).
 - **Probar con usuario:** `prueba@indice.test` por código; el código sale en la consola del servidor. Queda creado en la base de datos de desarrollo: borrarlo cuando haya borrado de cuenta (F8b) o pedírselo a Manuel. Los datos reales de Manuel nunca van al repo.
