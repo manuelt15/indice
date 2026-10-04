@@ -225,10 +225,12 @@ Cada fase se cierra solo cuando su criterio se cumple con evidencia (tests, lint
   - [x] Minimización: no se guarda la foto de perfil de Google o GitHub, los tokens OAuth se guardan cifrados y la migración 0006 borra los anteriores.
   - [ ] *Manuel:* MFA en GitHub, Vercel, Neon, Google Cloud y CARTO; aceptar los DPA de Vercel y Neon (se aceptan con sus términos; comprobar en sus paneles).
 - [ ] **F9 · Deploy.** Pendiente de Manuel: desactivar en Vercel el entrenamiento de IA con nuestro contenido y, después, decirlo en la política de privacidad; preguntar al soporte de Neon un plazo fijo de borrado de copias. Preview en Vercel (con `CARTO_BASEMAPS_API_KEY` en sus variables de entorno); producción **solo con confirmación de Manuel**. *Hecho cuando:* la URL de preview funciona, pasan los tests y la `/security-review`, y **F8b está cerrada**.
-  - [ ] *Código:* `vercel.json` con funciones en `fra1` (Frankfurt, como dice la privacidad).
-  - [ ] *Código:* limpieza diaria con Vercel Cron (`/api/cron/limpieza`, protegida con `CRON_SECRET`): sesiones caducadas, códigos caducados y límites de uso viejos. Con test.
-  - [ ] *Código:* en producción, sin servicio de correo configurado, `/entrar` no ofrece el código por correo (solo Google y GitHub).
-  - [ ] *Código:* `/security-review` de todo lo hecho desde F3 sin hallazgos.
+  - [x] *Código:* `vercel.json` con funciones en `fra1` (Frankfurt, como dice la privacidad).
+  - [x] *Código:* limpieza diaria con Vercel Cron (`/api/cron/limpieza`, protegida con `CRON_SECRET`): sesiones caducadas, códigos caducados y límites de uso viejos. Con test.
+  - [x] *Código:* en producción, sin servicio de correo configurado, `/entrar` no ofrece el código por correo (solo Google y GitHub).
+  - [x] *Código:* revisión de seguridad de todo lo hecho desde F3 (acciones, safeFetch, favicons, mapa, importar, exportar, borrar, cron): sin hallazgos. Repetir `/security-review` sobre el diff final antes de producción.
+  - [ ] *Código:* quien entra y no acepta los términos no puede borrar su cuenta (Ajustes exige haberlos aceptado). Añadir "No quiero continuar, borrar mi cuenta" en la bienvenida.
+  - [ ] *Manuel:* en Vercel, usar una URL estable (el dominio del proyecto, no la de cada deploy) como `BETTER_AUTH_URL` y en las apps OAuth: Better Auth rechaza orígenes distintos.
   - [ ] *Manuel:* importar el repo en Vercel (Hobby), crear apps OAuth de producción en Google y GitHub con la URL de Vercel, y una rama de Neon aparte para producción.
   - [ ] *Manuel:* variables de entorno en Vercel (nunca pegarlas en el chat): `DATABASE_URL`, `BETTER_AUTH_SECRET` nuevo, `BETTER_AUTH_URL`, `GOOGLE_*`, `GITHUB_*`, `CARTO_BASEMAPS_API_KEY`, `CRON_SECRET`.
 - [ ] **F10 · Vídeo de lanzamiento (al terminar todo).** Probar la skill [onetake](https://github.com/feitangyuan/onetake), que genera vídeos de producto en una sola toma con movimiento continuo de cámara.
