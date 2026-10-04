@@ -18,6 +18,7 @@ import { AddButton, SearchButton, SearchIconButton } from "@/features/library/tr
 import type { CategoryView, LinkView } from "@/features/library/types"
 import { categoriesRepo } from "@/lib/dal/categories"
 import { linksRepo } from "@/lib/dal/links"
+import { faviconSrc } from "@/lib/favicon-url"
 import { requireOnboardedUser } from "@/lib/session"
 import { heatWeeks, relativeDay } from "@/lib/stats"
 
@@ -116,7 +117,7 @@ export default async function AppPage() {
               <ul className="flex flex-col">
                 {links.slice(0, 6).map((l) => (
                   <li key={l.id} className="flex min-w-0 items-center gap-3 border-t border-dotted border-faint py-1.5 first:border-t-0">
-                    <SiteIcon src={`/api/favicon/${l.host}`} name={l.name} />
+                    <SiteIcon src={faviconSrc(l.host)} name={l.name} />
                     <a href={l.url} target="_blank" rel="noopener noreferrer" className="min-w-0 flex-1 truncate text-sm hover:text-primary">
                       {l.name}
                     </a>
@@ -140,7 +141,7 @@ export default async function AppPage() {
                         rel="noopener noreferrer"
                         className="flex items-center gap-2 rounded-lg border border-dotted border-border px-3 py-2 text-sm transition-colors duration-150 hover:bg-accent"
                       >
-                        <SiteIcon src={`/api/favicon/${l.host}`} name={l.name} />
+                        <SiteIcon src={faviconSrc(l.host)} name={l.name} />
                         {l.name}
                       </a>
                     </li>

@@ -5,6 +5,7 @@ import { IndexJump, IndexList, type IndexItem } from "@/components/ds/index-list
 import { Tabs, TabsCount, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { LinkActions } from "@/features/library/link-actions"
 import type { CategoryView, LinkView } from "@/features/library/types"
+import { faviconSrc } from "@/lib/favicon-url"
 
 const ALL = "todas"
 const NONE = "sin-categoria"
@@ -21,7 +22,7 @@ export function LibraryView({ links, categories, now }: { links: LinkView[]; cat
     name: l.name,
     href: l.url,
     host: l.host,
-    iconSrc: `/api/favicon/${l.host}`,
+    iconSrc: faviconSrc(l.host),
     pinned: l.pinned,
     isNew: now - new Date(l.createdAt).getTime() < NEW_MS,
     actions: <LinkActions id={l.id} name={l.name} pinned={l.pinned} />,

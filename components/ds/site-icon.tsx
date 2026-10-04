@@ -22,9 +22,14 @@ function SiteIcon({ src, name, className }: { src?: string | null; name: string;
         decoding="async"
         onError={() => setFailed(true)}
         onLoad={() => setLoaded(true)}
-        // Si la imagen ya estaba en caché, onLoad pudo dispararse antes de hidratar.
+        // onLoad y onError pueden dispararse antes de hidratar: se mira el estado real de la imagen.
+        // decode() solo falla si la imagen está rota (un SVG válido puede medir 0 de ancho natural).
         ref={(el) => {
-          if (el?.complete && el.naturalWidth > 0 && !loaded) setLoaded(true)
+          if (!el?.complete || loaded) return
+          el.decode().then(
+            () => setLoaded(true),
+            () => setFailed(true)
+          )
         }}
         data-loaded={loaded || undefined}
         // En oscuro, un fondo claro mínimo (solo cuando ya ha cargado) para que los favicons negros no desaparezcan.
