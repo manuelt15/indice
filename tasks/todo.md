@@ -10,11 +10,11 @@
 
 ## Para retomar (otro agente o sesión)
 
-- **Rama actual:** `main` (GitHub `manuelt15/indice`, privado), con F0 a F8b. F9 irá en `fase-9-deploy`. Cada fase nueva va en su rama y se integra con merge cuando Manuel lo dice. No se hace push a `main` sin confirmarlo con él.
+- **Rama actual:** `main` (GitHub `manuelt15/indice`, privado), con F0 a F8b y la preparación de F9 (región, cron, ramas de Neon). Falta que Manuel cree el proyecto en Vercel; los ajustes que salgan del deploy van en una rama nueva. Cada fase nueva va en su rama y se integra con merge cuando Manuel lo dice. No se hace push a `main` sin confirmarlo con él.
 - **Arrancar:** `npm run dev` (puerto 3100). `.env.local` contiene Neon, Better Auth, Google, GitHub y la clave de CARTO. Nunca imprimir sus valores.
 - **Antes de cerrar una fase:** `npm run lint`, `npm run typecheck`, `npm test`, `npm run build` en verde, y comprobar en el navegador (claro, oscuro y 375px).
 - **Probar con usuario:** `prueba@indice.test` por código; el código sale en la consola del servidor. Al terminar, borrarlo desde Ajustes (borrar cuenta). Los datos reales de Manuel nunca van al repo.
-- **Siguiente:** F8b (cumplimiento y borrado de cuenta), F9 y F10. Por decidir: dominio `indice.dev` y servicio de correo (Resend), necesarios antes de abrir a otras personas.
+- **Siguiente:** F9 (deploy) y F10. Por decidir: dominio `indice.dev` y servicio de correo (Resend), necesarios antes de abrir a otras personas.
 - **F8 (2026-10-04):** landing con datos de ejemplo; mapa real de CARTO vía MapLibre adaptado de mapcn, cargado al entrar en pantalla y servido desde `/api/map` para no contactar CARTO desde el navegador; footer privado centrado en la ciudad del usuario; mapa de calor móvil abierto en la semana actual; CSP con hash del script de tema y nonce para Next. Revisada en navegador en claro, oscuro, escritorio y 375 px. CARTO cambió sus condiciones en septiembre de 2026: exige una clave propia incluso para uso personal (hasta 5 millones de teselas al mes gratis). La clave está en `.env.local` como `CARTO_BASEMAPS_API_KEY` y el mapa se ha comprobado con ella. `/api/map` solo sirve lo que pide nuestro mapa (dos estilos, sprites, fuentes y teselas hasta zoom 12) y deja que el CDN lo guarde una semana, para que nadie pueda gastar el cupo. En desarrollo la CSP permite estilos inline porque Turbopack los inyecta sin nonce; en producción sigue estricta.
 - **Último arreglo (2026-10-04):** favicons que seguían rotos (huggingface, mapcn, manueltorres.pro, blobatar, autoskills, pixelcrash). El servidor ya los descargaba bien; el navegador guardaba 404 antiguos y `SiteIcon` no detectaba imágenes rotas antes de hidratar. Ahora la URL lleva versión (`lib/favicon-url.ts`, subir `FAVICON_VERSION` si vuelve a pasar) y `SiteIcon` comprueba con `decode()`.
 
@@ -225,6 +225,15 @@ Cada fase se cierra solo cuando su criterio se cumple con evidencia (tests, lint
   - [x] Minimización: no se guarda la foto de perfil de Google o GitHub, los tokens OAuth se guardan cifrados y la migración 0006 borra los anteriores.
   - [ ] *Manuel:* MFA en GitHub, Vercel, Neon, Google Cloud y CARTO; aceptar los DPA de Vercel y Neon (se aceptan con sus términos; comprobar en sus paneles).
 - [ ] **F9 · Deploy.** Pendiente de Manuel: desactivar en Vercel el entrenamiento de IA con nuestro contenido y, después, decirlo en la política de privacidad; preguntar al soporte de Neon un plazo fijo de borrado de copias. Preview en Vercel (con `CARTO_BASEMAPS_API_KEY` en sus variables de entorno); producción **solo con confirmación de Manuel**. *Hecho cuando:* la URL de preview funciona, pasan los tests y la `/security-review`, y **F8b está cerrada**.
+  - [x] *Código:* `vercel.json` con funciones en `fra1` (Frankfurt, como dice la privacidad).
+  - [x] *Código:* limpieza diaria con Vercel Cron (`/api/cron/limpieza`, protegida con `CRON_SECRET`): sesiones caducadas, códigos caducados y límites de uso viejos. Con test.
+  - [x] *Código:* en producción, sin servicio de correo configurado, `/entrar` no ofrece el código por correo (solo Google y GitHub).
+  - [x] *Código:* revisión de seguridad de todo lo hecho desde F3 (acciones, safeFetch, favicons, mapa, importar, exportar, borrar, cron): sin hallazgos. Repetir `/security-review` sobre el diff final antes de producción.
+  - [x] *Código:* quien entra y no acepta los términos puede borrar su cuenta desde la bienvenida ("¿No quieres continuar? Borra tu cuenta."). Probado en el navegador.
+  - [ ] *Manuel:* en Vercel, usar una URL estable (el dominio del proyecto, no la de cada deploy) como `BETTER_AUTH_URL` y en las apps OAuth: Better Auth rechaza orígenes distintos.
+  - [x] Neon: la rama `production` (la de siempre, con los datos reales) es producción; `desarrollo` (copia, sin auto-borrado) es la de local. `.env.local` apunta a desarrollo y guarda las de producción como `*_PRODUCCION`. Comprobado.
+  - [ ] *Manuel:* importar el repo en Vercel (Hobby) y crear apps OAuth de producción en Google y GitHub con la URL de Vercel.
+  - [ ] *Manuel:* variables de entorno en Vercel (nunca pegarlas en el chat): `DATABASE_URL` (= `DATABASE_URL_PRODUCCION` de `.env.local`), `BETTER_AUTH_SECRET` nuevo, `BETTER_AUTH_URL`, `GOOGLE_*`, `GITHUB_*`, `CARTO_BASEMAPS_API_KEY`, `CRON_SECRET`.
 - [ ] **F10 · Vídeo de lanzamiento (al terminar todo).** Probar la skill [onetake](https://github.com/feitangyuan/onetake), que genera vídeos de producto en una sola toma con movimiento continuo de cámara.
   - **Funcionamiento:** es local y no usa APIs de pago. Necesita Python 3 (playwright, numpy, scipy, Pillow, matplotlib, opencv), ffmpeg y node.
   - **Licencia:** PolyForm Noncommercial. Vale para uso personal; si índice llegara a ser comercial, el vídeo no podría usarse así.

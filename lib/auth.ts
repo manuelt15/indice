@@ -9,6 +9,9 @@ import { env } from "@/lib/env"
 
 const isProduction = process.env.NODE_ENV === "production"
 
+/** Hay forma de enviar códigos por correo. En producción, falso hasta configurar el servicio (pendiente: Resend). */
+export const emailCodesEnabled = !isProduction
+
 export const auth = betterAuth({
   baseURL: env.BETTER_AUTH_URL,
   secret: env.BETTER_AUTH_SECRET,
@@ -63,7 +66,7 @@ export const auth = betterAuth({
       allowedAttempts: 5,
       storeOTP: "hashed",
       async sendVerificationOTP({ email, otp }) {
-        if (isProduction) {
+        if (!emailCodesEnabled) {
           // Hasta configurar el servicio de correo (pendiente: Resend), no se envían códigos en producción.
           throw new Error("El envío de códigos por correo aún no está configurado.")
         }

@@ -30,7 +30,8 @@ function messageFor(code: string | undefined): string {
   }
 }
 
-export function SignInForm() {
+/** emailCodes: false mientras no haya servicio de correo en producción (los códigos no llegarían). */
+export function SignInForm({ emailCodes = true }: { emailCodes?: boolean }) {
   const router = useRouter()
   const [step, setStep] = React.useState<Step>({ kind: "start" })
   const [email, setEmail] = React.useState("")
@@ -141,31 +142,35 @@ export function SignInForm() {
           Continuar con GitHub
         </Button>
 
-        <div aria-hidden className="my-1 flex items-center gap-2.5 font-mono text-2xs text-muted-foreground">
-          <span className="flex-1 border-t border-dotted border-border" />O con tu correo
-          <span className="flex-1 border-t border-dotted border-border" />
-        </div>
+        {emailCodes ? (
+          <>
+            <div aria-hidden className="my-1 flex items-center gap-2.5 font-mono text-2xs text-muted-foreground">
+              <span className="flex-1 border-t border-dotted border-border" />O con tu correo
+              <span className="flex-1 border-t border-dotted border-border" />
+            </div>
 
-        <form onSubmit={sendCode} className="flex flex-col gap-3">
-          <div className="flex flex-col gap-1.5">
-            <Label htmlFor="email">Correo</Label>
-            <Input
-              id="email"
-              type="email"
-              autoComplete="email"
-              placeholder="tu@correo.com"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
-          <Button type="submit" disabled={pending}>
-            <EnvelopeClosedIcon />
-            Enviarme un código
-          </Button>
-        </form>
+            <form onSubmit={sendCode} className="flex flex-col gap-3">
+              <div className="flex flex-col gap-1.5">
+                <Label htmlFor="email">Correo</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  autoComplete="email"
+                  placeholder="tu@correo.com"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </div>
+              <Button type="submit" disabled={pending}>
+                <EnvelopeClosedIcon />
+                Enviarme un código
+              </Button>
+            </form>
 
-        <p className="font-mono text-2xs text-muted-foreground">Sin contraseñas. Te llega un código de 6 dígitos.</p>
+            <p className="font-mono text-2xs text-muted-foreground">Sin contraseñas. Te llega un código de 6 dígitos.</p>
+          </>
+        ) : null}
 
         <p className="text-sm leading-snug text-body">
           Al continuar confirmas que tienes 14 años o más y aceptas los{" "}
