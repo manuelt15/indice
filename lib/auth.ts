@@ -27,6 +27,7 @@ export const auth = betterAuth({
     additionalFields: {
       // input: false impide que el cliente los fije al registrarse; se editan desde el servidor.
       city: { type: "string", required: false, input: false },
+      cityCountry: { type: "string", required: false, input: false },
       cityLat: { type: "number", required: false, input: false },
       cityLng: { type: "number", required: false, input: false },
       onboardedAt: { type: "date", required: false, input: false },

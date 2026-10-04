@@ -32,6 +32,7 @@ export const user = pgTable("user", {
   image: text("image"),
   // Solo la ciudad y su centro; nunca la ubicación exacta del usuario.
   city: text("city"),
+  cityCountry: text("city_country"), // código ISO de 2 letras
   cityLat: doublePrecision("city_lat"),
   cityLng: doublePrecision("city_lng"),
   onboardedAt: timestamp("onboarded_at", { withTimezone: true }),

@@ -12,7 +12,7 @@
 - [x] **Repo:** `~/Developer/indice`, cuenta personal manuelt15, repo privado.
 - [x] **Color de peligro:** opción 1. Rojo del acento más texto explícito y confirmación escribiendo "borrar".
 - [x] **Clasificación:** solo reglas por palabras clave (gratis). IA opcional más adelante con tope de gasto.
-- [x] **Geocodificación:** Photon (OpenStreetMap) desde el servidor al guardar, con lista de ciudades frecuentes de respaldo.
+- [x] **Geocodificación:** Photon (OpenStreetMap, komoot, servidores en Alemania) desde el servidor mientras se busca, con lista de ciudades frecuentes de respaldo. Encargado a listar en la política de privacidad.
 - [x] **Mapa:** CARTO plan gratis con atribución visible; límites a revisar en F8. En la app, mapa real con mapcn (no el esquema del preview).
 - [x] **Hosting:** Vercel Hobby mientras sea gratis y personal; Pro si algún día es comercial.
 - [x] **Skills:** instalar taste-skill y emilkowalski/skill en el repo.
@@ -189,7 +189,7 @@ Cada fase se cierra solo cuando su criterio se cumple con evidencia (tests, lint
 - [x] **F1 · Base.** Repo, Next.js 16.3, Tailwind 4, shadcn (`radix-nova`, iconos Radix), `@shadcn/lint` con las 6 reglas, vitest y skills. *Cerrada el 2026-10-04:* `lint`, `typecheck`, `test` y `build` en verde; `npm audit --omit=dev` sin vulnerabilidades (las de desarrollo vienen de `braces` en herramientas de build).
 - [x] **F2 · Sistema de diseño.** DESIGN.md, tokens en 3 capas (`app/globals.css`), componentes `ui` adaptados y `ds` propios, `/kit`, logo y favicon del globo, tema claro/oscuro/sistema sin parpadeo. *Cerrada el 2026-10-04:* `/kit` revisado en claro, oscuro y a 375px sin desbordes ni errores de consola; lint sin excepciones; 11 tests.
 - [x] **F3 · Datos, auth y seguridad.** Neon (Postgres 18, Frankfurt) con rol `indice_app` y RLS forzada; Better Auth con Google, GitHub y código; `lib/dal` con doble barrera; 30 tests (aislamiento A/B contra Postgres real en memoria, URLs `javascript:`); login por código probado de punta a punta; `/security-review` sin hallazgos. *Cerrada el 2026-10-04:* login real con Google y GitHub probado por Manuel.
-- [ ] **F4 · Onboarding.** Bienvenida, nombre y ciudad (geocodificada en servidor) y primer paso. *Hecho cuando:* un usuario nuevo siempre lo ve y uno que lo completó nunca; nombre y ciudad salen en la app y en el footer.
+- [x] **F4 · Onboarding.** Bienvenida en 3 pasos (qué es índice, nombre y ciudad opcional, empezar). Ciudad elegida entre sugerencias con país (lista local + Photon desde el servidor, host fijo, 3 s de límite), guardada solo como ciudad, país y centro redondeado a ~1 km. *Cerrada el 2026-10-04:* probado de punta a punta (nuevo usuario siempre ve la bienvenida; tras completarla, nunca); nombre en la app y "Nombre, desde Ciudad, País" en el pie; 41 tests.
 - [ ] **F5 · App.** Resumen, biblioteca A–Z, categorías, ⌘K, pegar URL, fijar y borrar; favicons originales vía servidor con caché. *Hecho cuando:* el flujo completo está probado en el navegador.
   - **Pendiente de la revisión de seguridad de F3:** al aceptar `categoryId`, impedir enlazar con categorías de otro usuario (la FK `link.category_id` se comprueba sin RLS). Solución: FK compuesta `(user_id, category_id)` → `category(user_id, id)` o comprobación en `lib/dal`, con test de aislamiento.
 - [ ] **F6 · Importar de Chrome.** Parser del HTML de marcadores y eliminación de duplicados. *Hecho cuando:* hay un test con un export real y mis 43 enlaces están dentro de mi cuenta.

@@ -8,7 +8,7 @@ import { getSession } from "@/lib/session"
 export const metadata: Metadata = { title: "Entrar · índice" }
 
 export default async function EntrarPage() {
-  if (await getSession()) redirect("/app")
+  if (await getSession()) redirect("/app") // /app manda a /bienvenida si aún no la ha hecho
   return (
     <main className="mx-auto flex w-full max-w-md flex-1 flex-col gap-10 px-5 py-12">
       <div className="flex items-center justify-between">
