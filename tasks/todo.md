@@ -10,11 +10,11 @@
 
 ## Para retomar (otro agente o sesión)
 
-- **Rama actual:** `main` (GitHub `manuelt15/indice`, privado), con F0 a F8b y la preparación de F9 (región, cron, ramas de Neon). Falta que Manuel cree el proyecto en Vercel; los ajustes que salgan del deploy van en una rama nueva. Cada fase nueva va en su rama y se integra con merge cuando Manuel lo dice. No se hace push a `main` sin confirmarlo con él.
+- **Rama actual:** `main` (GitHub `manuelt15/indice`, privado), desplegada en https://indice-phi.vercel.app. Vercel solo despliega `main`; las ramas no se construyen. Cada fase nueva va en su rama y se integra con merge cuando Manuel lo dice. No se hace push a `main` sin confirmarlo con él.
 - **Arrancar:** `npm run dev` (puerto 3100). `.env.local` contiene Neon, Better Auth, Google, GitHub y la clave de CARTO. Nunca imprimir sus valores.
 - **Antes de cerrar una fase:** `npm run lint`, `npm run typecheck`, `npm test`, `npm run build` en verde, y comprobar en el navegador (claro, oscuro y 375px).
 - **Probar con usuario:** `prueba@indice.test` por código; el código sale en la consola del servidor. Al terminar, borrarlo desde Ajustes (borrar cuenta). Los datos reales de Manuel nunca van al repo.
-- **Siguiente:** F9 (deploy) y F10. Por decidir: dominio `indice.dev` y servicio de correo (Resend), necesarios antes de abrir a otras personas.
+- **Siguiente:** cerrar F9 con las tareas de Manuel (revisar la limpieza diaria en Vercel, IA de Vercel desactivada, MFA, soporte de Neon) y F10 (vídeo, pendiente). Resend y el dominio, más adelante. Por decidir: dominio `indice.dev` y servicio de correo (Resend), necesarios antes de abrir a otras personas.
 - **F8 (2026-10-04):** landing con datos de ejemplo; mapa real de CARTO vía MapLibre adaptado de mapcn, cargado al entrar en pantalla y servido desde `/api/map` para no contactar CARTO desde el navegador; footer privado centrado en la ciudad del usuario; mapa de calor móvil abierto en la semana actual; CSP con hash del script de tema y nonce para Next. Revisada en navegador en claro, oscuro, escritorio y 375 px. CARTO cambió sus condiciones en septiembre de 2026: exige una clave propia incluso para uso personal (hasta 5 millones de teselas al mes gratis). La clave está en `.env.local` como `CARTO_BASEMAPS_API_KEY` y el mapa se ha comprobado con ella. `/api/map` solo sirve lo que pide nuestro mapa (dos estilos, sprites, fuentes y teselas hasta zoom 12) y deja que el CDN lo guarde una semana, para que nadie pueda gastar el cupo. En desarrollo la CSP permite estilos inline porque Turbopack los inyecta sin nonce; en producción sigue estricta.
 - **Último arreglo (2026-10-04):** favicons que seguían rotos (huggingface, mapcn, manueltorres.pro, blobatar, autoskills, pixelcrash). El servidor ya los descargaba bien; el navegador guardaba 404 antiguos y `SiteIcon` no detectaba imágenes rotas antes de hidratar. Ahora la URL lleva versión (`lib/favicon-url.ts`, subir `FAVICON_VERSION` si vuelve a pasar) y `SiteIcon` comprueba con `decode()`.
 
@@ -239,6 +239,7 @@ Cada fase se cierra solo cuando su criterio se cumple con evidencia (tests, lint
   - [x] README en español con captura de la landing (clara y oscura, `docs/img/`).
   - [ ] Comprobar mañana en Vercel (Logs, cron) que la limpieza de las 4:00 respondió 200.
 - [ ] **F10 · Vídeo de lanzamiento (al terminar todo).** Probar la skill [onetake](https://github.com/feitangyuan/onetake), que genera vídeos de producto en una sola toma con movimiento continuo de cámara.
+  - **Pendiente (decidido el 2026-10-04: se hará más adelante).** Antes de empezar, pedir permiso para instalar: la skill (`git clone` en `~/.claude/skills/onetake`, leer su código antes de usarla), `brew install ffmpeg`, `brew install python@3.12` (el Mac solo tiene Python 3.9), un venv con playwright, numpy, scipy, Pillow, matplotlib y opencv-python, y `playwright install chromium`. Unos 700 MB.
   - **Funcionamiento:** es local y no usa APIs de pago. Necesita Python 3 (playwright, numpy, scipy, Pillow, matplotlib, opencv), ffmpeg y node.
   - **Licencia:** PolyForm Noncommercial. Vale para uso personal; si índice llegara a ser comercial, el vídeo no podría usarse así.
   - **Hecho cuando:** hay un vídeo de ~15 s de índice revisado por Manuel.
