@@ -22,6 +22,27 @@
       "when": 1791118667644,
       "tag": "0002_ciudad_pais",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1791118990922,
+      "tag": "0003_categoria_por_usuario",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1791118991312,
+      "tag": "0004_fk_categoria_compuesta",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1791119103793,
+      "tag": "0005_favicon_cache",
+      "breakpoints": true
     }
   ]
 }

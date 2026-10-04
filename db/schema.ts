@@ -2,6 +2,7 @@ import { sql } from "drizzle-orm"
 import {
   bigint,
   boolean,
+  customType,
   doublePrecision,
   index,
   integer,
@@ -11,6 +12,8 @@ import {
   timestamp,
   uniqueIndex,
 } from "drizzle-orm/pg-core"
+
+const bytea = customType<{ data: Buffer; driverData: Buffer }>({ dataType: () => "bytea" })
 
 const timestamps = {
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
@@ -116,6 +119,7 @@ export const category = pgTable(
   },
   (t) => [
     uniqueIndex("category_user_slug_idx").on(t.userId, t.slug),
+    uniqueIndex("category_user_id_idx").on(t.userId, t.id),
     pgPolicy("category_owner", { for: "all", to: "public", using: isOwner, withCheck: isOwner }),
   ]
 ).enableRLS()
@@ -131,7 +135,9 @@ export const link = pgTable(
     normalizedUrl: text("normalized_url").notNull(),
     name: text("name").notNull(),
     title: text("title"),
-    categoryId: text("category_id").references(() => category.id, { onDelete: "set null" }),
+    // FK compuesta (user_id, category_id) → category(user_id, id) en la migración 0004:
+    // un enlace solo puede apuntar a categorías de su mismo usuario.
+    categoryId: text("category_id"),
     tags: text("tags").array().notNull().default(sql`'{}'::text[]`),
     pinned: boolean("pinned").notNull().default(false),
     ...timestamps,
@@ -142,3 +148,16 @@ export const link = pgTable(
     pgPolicy("link_owner", { for: "all", to: "public", using: isOwner, withCheck: isOwner }),
   ]
 ).enableRLS()
+
+/* ------------------------------------------------------------------ */
+/* Caché global de favicons, solo de servidor. Sin datos de usuarios: */
+/* guarda el icono de cada dominio, no quién lo guardó.               */
+/* ------------------------------------------------------------------ */
+
+export const faviconCache = pgTable("favicon_cache", {
+  host: text("host").primaryKey(),
+  data: bytea("data"),
+  contentType: text("content_type"),
+  missing: boolean("missing").notNull().default(false),
+  fetchedAt: timestamp("fetched_at", { withTimezone: true }).notNull().defaultNow(),
+})

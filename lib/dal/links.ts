@@ -45,6 +45,18 @@ export function linksRepo(db: Db) {
       return row
     },
 
+    /** Fija o quita un enlace. Devuelve false si no existe o no es de este usuario. */
+    async setPinned(userId: string, id: string, pinned: boolean): Promise<boolean> {
+      const rows = await withUser(db, userId, (tx) =>
+        tx
+          .update(link)
+          .set({ pinned })
+          .where(and(eq(link.id, id), eq(link.userId, userId)))
+          .returning({ id: link.id })
+      )
+      return rows.length > 0
+    },
+
     /** Devuelve true si se borró; false si no existe o no es de este usuario. */
     async remove(userId: string, id: string): Promise<boolean> {
       const rows = await withUser(db, userId, (tx) =>

@@ -35,6 +35,14 @@ describe("aislamiento entre usuarios (capa de datos)", () => {
     expect(await repo.get(A, created.id)).not.toBeNull()
   })
 
+  it("B no puede fijar los enlaces de A", async () => {
+    const repo = linksRepo(db)
+    const created = await repo.create(A, { url: "https://fijable.com", name: "Fijable" })
+    expect(await repo.setPinned(B, created.id, true)).toBe(false)
+    expect((await repo.get(A, created.id))?.pinned).toBe(false)
+    expect(await repo.setPinned(A, created.id, true)).toBe(true)
+  })
+
   it("rechaza URLs que no son http(s)", async () => {
     await expect(linksRepo(db).create(A, { url: "javascript:alert(1)", name: "x" })).rejects.toThrow()
   })

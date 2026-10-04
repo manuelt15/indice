@@ -57,6 +57,9 @@
 
   --ease-out-quint: cubic-bezier(0.23, 1, 0.32, 1);
 
+  /* Alto máximo de un diálogo: deja ver la página detrás. */
+  --spacing-dialog: 80dvh;
+
   --animate-ping-soft: ping-soft 2.4s var(--ease-out-quint) infinite;
 
   --radius-sm: calc(var(--radius) * 0.5);
