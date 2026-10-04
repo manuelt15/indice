@@ -6,9 +6,11 @@ import { GlyphHeatmap, GlyphHeatmapLegend } from "@/components/ds/glyph-heatmap"
 import { IndexList } from "@/components/ds/index-list"
 import { Logo } from "@/components/ds/logo"
 import { SiteFooter } from "@/components/ds/site-footer"
+import { SiteIcon } from "@/components/ds/site-icon"
 import { ThemeToggle } from "@/components/ds/theme-toggle"
 import { Button } from "@/components/ui/button"
 import { SAMPLE_LINKS, sampleHeatWeeks } from "@/lib/sample-links"
+import { relativeDay } from "@/lib/stats"
 
 const features = [
   {
@@ -35,6 +37,12 @@ const categories = ["UI", "Diseño", "Dev", "IA", "Aprender"].map((label) => ({
   label,
   value: SAMPLE_LINKS.filter((link) => link.category === label).length,
 }))
+
+// Hoy, ayer, hace 3 días… Relativo a la fecha actual para que el ejemplo nunca envejezca.
+const recent = ["7", "1", "10", "4", "9"].map((id, i) => {
+  const link = SAMPLE_LINKS.find((l) => l.id === id)!
+  return { ...link, when: relativeDay(new Date(Date.now() - [0, 1, 3, 6, 12][i] * 86_400_000), new Date()) }
+})
 
 export default function Home() {
   return (
@@ -87,9 +95,19 @@ export default function Home() {
               <FrameFooter><span>Datos de ejemplo</span><GlyphHeatmapLegend /></FrameFooter>
             </Frame>
             <Frame label="categorías"><GlyphBars rows={categories} /></Frame>
-            <Frame label="enlaces recientes">
-              <p className="text-sm text-body">Encuentra lo que guardaste por nombre, dominio o categoría.</p>
-              <FrameFooter><span>Buscar con ⌘K</span></FrameFooter>
+            <Frame label="recientes">
+              <ul className="flex flex-col">
+                {recent.map((link) => (
+                  <li key={link.id} className="flex min-w-0 items-center gap-3 border-t border-dotted border-faint py-1.5 first:border-t-0">
+                    <SiteIcon name={link.name} />
+                    <a href={link.href} target="_blank" rel="noopener noreferrer" className="min-w-0 flex-1 truncate text-sm hover:text-primary">
+                      {link.name}
+                    </a>
+                    <span className="hidden shrink-0 font-mono text-2xs text-muted-foreground sm:inline">{link.category}</span>
+                    <span className="shrink-0 font-mono text-2xs text-muted-foreground">{link.when}</span>
+                  </li>
+                ))}
+              </ul>
             </Frame>
             <Frame label="biblioteca A–Z" className="md:col-span-2">
               <IndexList items={SAMPLE_LINKS} />

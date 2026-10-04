@@ -47,4 +47,22 @@ describe("proxy del mapa", () => {
     expect(response.status).toBe(503)
     expect(fetchMock).not.toHaveBeenCalled()
   })
+
+  it("solo sirve lo que usa nuestro mapa", async () => {
+    vi.stubEnv("CARTO_BASEMAPS_API_KEY", "test-key")
+    const fetchMock = vi.fn().mockImplementation(async () => new Response("x", { headers: { "Content-Type": "application/x-protobuf" } }))
+    vi.stubGlobal("fetch", fetchMock)
+    const status = async (path: string[]) =>
+      (await GET(new Request(`https://indice.dev/api/map/${path.join("/")}`), { params: Promise.resolve({ path }) })).status
+
+    expect(await status(["tiles-b", "vectortiles", "carto.streets", "v1", "11", "1003", "772.mvt"])).toBe(200)
+    expect(await status(["tiles", "fonts", "Montserrat Medium,Open Sans Bold", "0-255.pbf"])).toBe(200)
+    expect(await status(["tiles", "gl", "dark-matter-gl-style", "sprite@2x.png"])).toBe(200)
+    // Zoom alto: lo que pediría alguien que quisiera descargar el mapa entero.
+    expect(await status(["tiles-a", "vectortiles", "carto.streets", "v1", "15", "16000", "12000.mvt"])).toBe(404)
+    expect(await status(["style", "otro-estilo", "style.json"])).toBe(404)
+    expect(await status(["tiles", "raster", "light_all", "1", "0", "0.png"])).toBe(404)
+    expect(await status(["constructor", "x"])).toBe(404)
+    expect(fetchMock).toHaveBeenCalledTimes(3)
+  })
 })

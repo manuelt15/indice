@@ -10,7 +10,8 @@ export function proxy(request: NextRequest) {
   const policy = [
     "default-src 'self'",
     `script-src 'self' 'nonce-${nonce}' 'sha256-${themeHash}' 'strict-dynamic'${isDev ? " 'unsafe-eval'" : ""}`,
-    `style-src 'self' 'nonce-${nonce}'`,
+    // En desarrollo, Turbopack inyecta el CSS sin nonce (y con nonce el navegador ignora 'unsafe-inline').
+    isDev ? "style-src 'self' 'unsafe-inline'" : `style-src 'self' 'nonce-${nonce}'`,
     "img-src 'self' data: blob:",
     "font-src 'self'",
     `connect-src 'self'${isDev ? " ws:" : ""}`,
