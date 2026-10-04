@@ -33,7 +33,7 @@
 - [x] **Titular legal:** Manuel Torres, persona física. Contacto: manueltorres1512@gmail.com. Sin dirección mientras no haya actividad económica.
 - [x] **Región de datos:** UE (Neon Frankfurt, funciones de Vercel en `fra1`).
 - [x] **Textos:** los del preview como base; se pulen en F8.
-- [ ] **Dominio `indice.dev`:** pendiente.
+- [ ] **Dominio `indice.dev`:** pendiente (se decide más adelante).
 - [ ] **Correo (Resend u otro):** pendiente. Hasta entonces, en desarrollo el código de login sale en consola; en producción hace falta antes de abrir a otras personas.
 
 ---
@@ -235,7 +235,8 @@ Cada fase se cierra solo cuando su criterio se cumple con evidencia (tests, lint
   - [x] *Manuel:* proyecto `indice` en Vercel (Hobby), dominio `https://indice-phi.vercel.app`, app OAuth de GitHub para producción y URLs de producción en el cliente de Google.
   - [x] *Manuel:* variables de entorno en Vercel (nunca pegarlas en el chat): `DATABASE_URL` (= `DATABASE_URL_PRODUCCION` de `.env.local`), `BETTER_AUTH_SECRET` nuevo, `BETTER_AUTH_URL`, `GOOGLE_*`, `GITHUB_*`, `CARTO_BASEMAPS_API_KEY`, `CRON_SECRET`. Solo en Production (las previews no tocan la base de datos real).
   - [x] Deploy en producción comprobado el 2026-10-04: funciones en `fra1`, cabeceras de seguridad y CSP, páginas legales, mapa vía `/api/map` sin peticiones a terceros, rutas privadas protegidas (401/307), consola sin errores.
-  - [ ] *Manuel:* probar el login con Google y con GitHub en producción.
+  - [x] *Manuel:* login con Google y con GitHub probado en producción (2026-10-04).
+  - [x] README en español con captura de la landing (clara y oscura, `docs/img/`).
   - [ ] Comprobar mañana en Vercel (Logs, cron) que la limpieza de las 4:00 respondió 200.
 - [ ] **F10 · Vídeo de lanzamiento (al terminar todo).** Probar la skill [onetake](https://github.com/feitangyuan/onetake), que genera vídeos de producto en una sola toma con movimiento continuo de cámara.
   - **Funcionamiento:** es local y no usa APIs de pago. Necesita Python 3 (playwright, numpy, scipy, Pillow, matplotlib, opencv), ffmpeg y node.
