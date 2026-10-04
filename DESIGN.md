@@ -68,6 +68,8 @@ Tres capas, todas en `app/globals.css`:
 | `ring` | primary-100 | primary-200 | Foco |
 | `overlay` | rgb(35 33 33 / 0.35) | rgb(0 0 0 / 0.6) | Fondo de diálogos |
 
+**Marcas de terceros.** Los colores oficiales de Google (`--color-google-red`, `-blue`, `-yellow`, `-green`) son tokens solo para su logo en el login. No se usan en ningún otro sitio.
+
 **Peligro.** El acento ya es rojo, así que una acción destructiva no se distingue por el color: se distingue por el texto ("Borrar mi cuenta y todos mis datos"), por el estilo `destructive` (borde punteado, sin relleno) y por una confirmación explícita.
 
 **Contraste.** `primary` sobre `background` y `primary-foreground` sobre `primary` superan 4,5:1 en los dos temas. `muted-foreground` también. `faint` no, y por eso no se usa para texto.

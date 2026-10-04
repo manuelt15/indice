@@ -13,5 +13,7 @@ Web para guardar y ordenar marcadores, con cuenta propia y privada. Plan complet
 - **Seguridad y cumplimiento:** ver §4 y §4b de `tasks/todo.md` y la sección 13 del CLAUDE.md global.
 
 ## Comandos
-- `npm run dev`, `npm run lint`, `npm test`, `npm run typecheck`, `npm run build`
+- `npm run dev` (puerto 3100), `npm run lint`, `npm test`, `npm run typecheck`, `npm run build`
+- Base de datos: `npm run db:generate` (nueva migración), `npm run db:migrate` (aplicar con el rol dueño), `npm run db:setup` (primera vez: migra y crea la conexión de `indice_app`)
+- En desarrollo, el código de acceso por correo sale en la consola del servidor.
 - Una fase solo se cierra con `lint`, `typecheck`, `test` y `build` en verde.

@@ -36,6 +36,12 @@
   --color-ring: var(--ring);
   --color-overlay: var(--overlay);
 
+  /* Colores de marca de terceros: solo para sus logos oficiales en el login. */
+  --color-google-red: #ea4335;
+  --color-google-blue: #4285f4;
+  --color-google-yellow: #fbbc05;
+  --color-google-green: #34a853;
+
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, "SF Mono", Menlo, monospace;
   --font-heading: var(--font-sans);
