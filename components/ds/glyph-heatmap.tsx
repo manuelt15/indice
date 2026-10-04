@@ -1,3 +1,6 @@
+"use client"
+
+import { useEffect, useRef } from "react"
 import { cn } from "cn"
 import { HEAT_GLYPHS, heatLevel } from "@/lib/glyphs"
 
@@ -8,8 +11,14 @@ const DAY_LABELS = ["L", "", "X", "", "V", "", ""]
 /** Mapa de calor con caracteres (·░▒▓█). Una columna por semana, de lunes a domingo. */
 function GlyphHeatmap({ weeks, className }: { weeks: HeatWeek[]; className?: string }) {
   const max = Math.max(0, ...weeks.flatMap((w) => w.counts))
+  const scroller = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (scroller.current) scroller.current.scrollLeft = scroller.current.scrollWidth
+  }, [weeks])
+
   return (
-    <div className={cn("overflow-x-auto overflow-y-hidden pb-1", className)}>
+    <div ref={scroller} className={cn("overflow-x-auto overflow-y-hidden pb-1", className)}>
       <div className="flex w-max font-mono text-xs leading-3" role="img" aria-label="Enlaces guardados por día">
         <div aria-hidden className="mr-1.5 flex flex-col">
           <span className="h-5" />

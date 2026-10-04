@@ -1,18 +1,21 @@
 # Plan de índice
 
 > Página para que cualquier persona guarde y organice sus marcadores, con cuenta propia y privada.
-> Estado: **en construcción**. F0 a F7 cerradas. Siguiente: F8. Última actualización: 2026-10-04.
+> Estado: **en construcción**. F0 a F8 cerradas en la rama `fase-8-landing`, pendiente de integrar en `main`. Siguiente: F8b. Última actualización: 2026-10-04.
 > Preview visual: https://claude.ai/artifact/H2iLStCWFxeGcyXBcDPUux (landing · entrar · bienvenida · app · /kit)
+
+- [Handover de F8, 2026-10-04](handovers-archive/HANDOVER-2026-10-04-fase-8-landing.md) — F8 cerrada el mismo día con la clave de CARTO; detalles del mapa y la CSP.
 
 ---
 
 ## Para retomar (otro agente o sesión)
 
-- **Rama actual:** `main` (GitHub `manuelt15/indice`, privado), con F0 a F7 integradas. Cada fase nueva va en su rama (`fase-8-landing`…) y se integra con merge cuando Manuel lo dice. No se hace push a `main` sin confirmarlo con él.
-- **Arrancar:** `npm run dev` (puerto 3100). `.env.local` ya está completo (Neon, Better Auth, Google, GitHub); nunca imprimir sus valores.
+- **Rama actual:** `fase-8-landing` (GitHub `manuelt15/indice`, privado), con F8 terminada; falta integrarla en `main` cuando Manuel lo diga. Cada fase nueva va en su rama y se integra con merge cuando Manuel lo dice. No se hace push a `main` sin confirmarlo con él.
+- **Arrancar:** `npm run dev` (puerto 3100). `.env.local` contiene Neon, Better Auth, Google, GitHub y la clave de CARTO. Nunca imprimir sus valores.
 - **Antes de cerrar una fase:** `npm run lint`, `npm run typecheck`, `npm test`, `npm run build` en verde, y comprobar en el navegador (claro, oscuro y 375px).
 - **Probar con usuario:** `prueba@indice.test` por código; el código sale en la consola del servidor. Queda creado en la base de datos de desarrollo: borrarlo cuando haya borrado de cuenta (F8b) o pedírselo a Manuel. Los datos reales de Manuel nunca van al repo.
-- **Siguiente:** F8 (landing pública, mapa mapcn real en el footer, mapa de calor en móvil abierto en la semana actual, CSP con hash del script de tema, pulir textos). Después F8b, F9 y F10. Por decidir: dominio `indice.dev` y servicio de correo (Resend), necesarios antes de abrir a otras personas.
+- **Siguiente:** F8b (cumplimiento y borrado de cuenta), F9 y F10. Por decidir: dominio `indice.dev` y servicio de correo (Resend), necesarios antes de abrir a otras personas.
+- **F8 (2026-10-04):** landing con datos de ejemplo; mapa real de CARTO vía MapLibre adaptado de mapcn, cargado al entrar en pantalla y servido desde `/api/map` para no contactar CARTO desde el navegador; footer privado centrado en la ciudad del usuario; mapa de calor móvil abierto en la semana actual; CSP con hash del script de tema y nonce para Next. Revisada en navegador en claro, oscuro, escritorio y 375 px. CARTO cambió sus condiciones en septiembre de 2026: exige una clave propia incluso para uso personal (hasta 5 millones de teselas al mes gratis). La clave está en `.env.local` como `CARTO_BASEMAPS_API_KEY` y el mapa se ha comprobado con ella. `/api/map` solo sirve lo que pide nuestro mapa (dos estilos, sprites, fuentes y teselas hasta zoom 12) y deja que el CDN lo guarde una semana, para que nadie pueda gastar el cupo. En desarrollo la CSP permite estilos inline porque Turbopack los inyecta sin nonce; en producción sigue estricta.
 - **Último arreglo (2026-10-04):** favicons que seguían rotos (huggingface, mapcn, manueltorres.pro, blobatar, autoskills, pixelcrash). El servidor ya los descargaba bien; el navegador guardaba 404 antiguos y `SiteIcon` no detectaba imágenes rotas antes de hidratar. Ahora la URL lleva versión (`lib/favicon-url.ts`, subir `FAVICON_VERSION` si vuelve a pasar) y `SiteIcon` comprueba con `decode()`.
 
 ---
@@ -206,10 +209,14 @@ Cada fase se cierra solo cuando su criterio se cumple con evidencia (tests, lint
 - [x] **F6 · Importar de Chrome.** `/importar` (también desde la bienvenida y desde la app). El archivo se lee en el navegador y solo se envían los enlaces; el servidor revalida todo (solo http/https, máx. 5.000, 5 MB). Carpeta de primer nivel = categoría, subcarpetas = tags, fecha original conservada, duplicados saltados (en el archivo y frente a lo que ya hay), todo en una transacción. Favicons con fondo claro en oscuro. Probado con un export de ejemplo de Chrome en el navegador; 114 tests. *Cerrada el 2026-10-04:* Manuel importó su export real, 43 enlaces. Arreglados los favicons que faltaban: .ico grandes (huggingface.co, 205 KB; límite subido a 512 KB) y webs con solo favicon SVG (mapcn, manueltorres.pro, blobatar).
 - [x] **F7 · Clasificación.** Reglas gratuitas y locales (`lib/classify.ts`): dominio, ruta y título puntúan UI, Diseño, IA, Dev, Aprender y Personal; la web propia se reconoce por el nombre del usuario. Se aplica al importar (las carpetas pasan a tags), al añadir (sugerencia con su porqué) y con el botón Reorganizar automáticamente (las categorías antiguas se guardan como tags y se borran las que quedan vacías). Probado con los 43 marcadores reales de Manuel sin guardarlos en el repo: 43/43 clasificados. 139 tests. *Cerrada el 2026-10-04:* Manuel reorganizó su cuenta y dio el visto bueno; integrada en `main`.
   - IA opcional (fase posterior): descartada por ahora para no tener costes.
-- [ ] **F8 · Landing y footer.** Landing pública con datos de ejemplo y mapa mapcn pequeño. *Hecho cuando:* está revisada en móvil y escritorio, claro y oscuro, sin errores en consola.
-  - Pulir: en móvil, el mapa de calor debe abrirse mostrando la semana actual (ahora empieza en el mes más antiguo).
+- [x] **F8 · Landing y footer.** Landing pública con datos de ejemplo y mapa real pequeño. *Hecho cuando:* revisada en móvil y escritorio, claro y oscuro, sin errores en consola y con clave CARTO propia.
+  - [x] Construir la landing pública con los componentes y datos de ejemplo existentes.
+  - [x] Añadir el mapa real al footer público y privado, con carga al aparecer y atribución visible.
+  - [x] Abrir el mapa de calor móvil en la semana actual y configurar la CSP con hash del script de tema.
+  - [x] Verificar el mapa con clave CARTO propia y repetir lint, tipos, tests, build y navegador en escritorio, 375px, claro y oscuro. *Cerrada el 2026-10-04:* mapa sin marca de agua en claro y oscuro, la clave nunca llega al navegador, 143 tests.
+  - [x] Marco de recientes de la landing con enlaces de ejemplo (antes estaba vacío).
 - [ ] **F8b · Cumplimiento.** Páginas legales, `docs/compliance.md`, DPAs aceptados, MFA en cuentas de administración y revisión WCAG 2.2 AA (ver §4b). *Hecho cuando:* todos los entregables de §4b existen, los encargados están listados con región y DPA, y el flujo de borrado de cuenta elimina todos los datos (con test).
-- [ ] **F9 · Deploy.** Preview en Vercel; producción **solo con confirmación de Manuel**. *Hecho cuando:* la URL de preview funciona, pasan los tests y la `/security-review`, y **F8b está cerrada**.
+- [ ] **F9 · Deploy.** Preview en Vercel (con `CARTO_BASEMAPS_API_KEY` en sus variables de entorno); producción **solo con confirmación de Manuel**. *Hecho cuando:* la URL de preview funciona, pasan los tests y la `/security-review`, y **F8b está cerrada**.
 - [ ] **F10 · Vídeo de lanzamiento (al terminar todo).** Probar la skill [onetake](https://github.com/feitangyuan/onetake), que genera vídeos de producto en una sola toma con movimiento continuo de cámara.
   - **Funcionamiento:** es local y no usa APIs de pago. Necesita Python 3 (playwright, numpy, scipy, Pillow, matplotlib, opencv), ffmpeg y node.
   - **Licencia:** PolyForm Noncommercial. Vale para uso personal; si índice llegara a ser comercial, el vídeo no podría usarse así.

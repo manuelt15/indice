@@ -6,7 +6,6 @@ const securityHeaders = [
   { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
   { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(), payment=(), usb=()" },
   { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" },
-  // La CSP completa (con hash del script de tema) llega en la fase 8.
 ];
 
 const nextConfig: NextConfig = {

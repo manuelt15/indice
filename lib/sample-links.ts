@@ -1,4 +1,5 @@
 import type { IndexItem } from "@/components/ds/index-list"
+import { heatWeeks } from "@/lib/stats"
 
 /** Enlaces de ejemplo para /kit y la landing. Nunca son datos de un usuario. */
 export const SAMPLE_LINKS: (IndexItem & { category: string })[] = [
@@ -18,14 +19,14 @@ export const SAMPLE_LINKS: (IndexItem & { category: string })[] = [
 
 /** 26 semanas de actividad de ejemplo, deterministas. */
 export function sampleHeatWeeks() {
-  const months = ["abr", "may", "jun", "jul", "ago", "sep"]
+  const now = new Date()
+  const weeks = heatWeeks([], now)
   let seed = 7
   const rnd = () => (seed = (seed * 9301 + 49297) % 233280) / 233280
-  return Array.from({ length: 26 }, (_, w) => ({
-    month: Math.floor((w * months.length) / 26) !== Math.floor(((w - 1) * months.length) / 26) || w === 0
-      ? months[Math.floor((w * months.length) / 26)]
-      : undefined,
-    counts: Array.from({ length: 7 }, () => {
+  return weeks.map((week, w) => ({
+    month: week.month,
+    counts: Array.from({ length: 7 }, (_, d) => {
+      if (w === weeks.length - 1 && d > (now.getDay() + 6) % 7) return 0
       const v = rnd()
       return v > 0.93 ? 4 : v > 0.85 ? 3 : v > 0.74 ? 2 : v > 0.6 ? 1 : 0
     }),

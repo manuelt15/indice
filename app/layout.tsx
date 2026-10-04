@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { connection } from "next/server";
 import { themeInitScript } from "@/lib/theme";
 import "./globals.css";
 
@@ -18,7 +19,8 @@ export const metadata: Metadata = {
   description: "Guarda y ordena tus marcadores. Solo tú los ves.",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default async function RootLayout({ children }: LayoutProps<"/">) {
+  await connection();
   return (
     <html lang="es" suppressHydrationWarning className={`${geistSans.variable} ${geistMono.variable} h-full`}>
       <head>
