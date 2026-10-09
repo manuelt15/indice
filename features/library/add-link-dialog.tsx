@@ -28,11 +28,13 @@ export function AddLinkDialog({
   initialUrl,
   categories,
   onOpenChange,
+  onSaved,
 }: {
   open: boolean
   initialUrl: string
   categories: CategoryView[]
   onOpenChange: (open: boolean) => void
+  onSaved: (name: string) => void
 }) {
   const router = useRouter()
   const [url, setUrl] = React.useState(initialUrl)
@@ -106,6 +108,7 @@ export function AddLinkDialog({
         return
       }
       onOpenChange(false)
+      onSaved(name.trim())
       router.refresh()
     })
   }
