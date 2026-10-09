@@ -1,35 +1,41 @@
+"use client"
+
+import * as React from "react"
 import { cn } from "cn"
 
 export type ToastMessage = { id: number; text: string; tone: "done" | "error" }
 
 /**
- * Aviso breve abajo, con el aspecto de un marco: [ hecho ] o [ error ].
+ * Aviso breve arriba, bajo la cabecera, en colores invertidos para destacar sin sombra: [ hecho ] o [ error ].
+ * Entra bajando y sale subiendo; se desmonta al acabar la salida.
  * La región viva está siempre montada para que los lectores de pantalla anuncien cada aviso.
  */
 function Toast({ message, className }: { message: ToastMessage | null; className?: string }) {
+  // Conserva el último aviso mientras dura la animación de salida.
+  const [shown, setShown] = React.useState(message)
+  if (message && message !== shown) setShown(message)
+  const closing = !message && shown !== null
+
   return (
     <div
       role="status"
       aria-live="polite"
-      className={cn("pointer-events-none fixed inset-x-4 bottom-6 z-50 mx-auto flex max-w-sm justify-center", className)}
+      className={cn("pointer-events-none fixed inset-x-4 top-20 z-50 mx-auto flex max-w-sm justify-center", className)}
     >
-      {message ? (
+      {shown ? (
         <p
-          key={message.id}
+          key={shown.id}
           data-slot="toast"
-          className="relative w-full border border-dotted border-border bg-background px-5 pt-5 pb-4 text-sm text-foreground duration-150 ease-out-quint animate-in fade-in-0 slide-in-from-bottom-2"
+          data-state={closing ? "closed" : "open"}
+          onAnimationEnd={() => {
+            if (closing) setShown(null)
+          }}
+          className="flex w-full flex-col gap-1 bg-foreground px-5 py-3.5 text-sm text-background ease-out-quint data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:slide-out-to-top-2 data-[state=closed]:duration-150 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95 data-[state=open]:slide-in-from-top-3 data-[state=open]:duration-250"
         >
-          <span aria-hidden className="absolute inset-x-5 -top-2.5 flex">
-            <span
-              className={cn(
-                "truncate bg-background px-2 font-mono text-xs tracking-label",
-                message.tone === "error" ? "text-destructive" : "text-primary"
-              )}
-            >
-              [ {message.tone === "error" ? "error" : "hecho"} ]
-            </span>
+          <span aria-hidden className="font-mono text-xs tracking-label text-primary-soft">
+            [ {shown.tone === "error" ? "error" : "hecho"} ]
           </span>
-          {message.text}
+          {shown.text}
         </p>
       ) : null}
     </div>

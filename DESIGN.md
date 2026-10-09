@@ -126,6 +126,7 @@ No hay sombras. La profundidad la dan:
 - Pulsar un botón: `active:scale-97`.
 - Giro del logo al pasar el ratón: `duration-500`, -30°.
 - Pulso del mapa: `animate-ping-soft` (2,4 s).
+- Aviso (Toast): entra bajando con fundido y `zoom-in-95` en `duration-250`; sale subiendo con fundido en `duration-150`.
 - Todo respeta `prefers-reduced-motion`.
 
 ## Components
@@ -148,7 +149,7 @@ Capas: `components/ui` (primitivos de shadcn adaptados) y `components/ds` (pieza
 - **IndexList / IndexEntry / IndexJump**: biblioteca A–Z con puntos guía y barra de letras. Ordena con las reglas del español (la Ñ después de la N, las tildes no separan).
 - **SiteIcon**: favicon o, si no hay o falla al cargar, la inicial. En oscuro lleva un fondo claro mínimo para que los favicons negros sigan viéndose.
 - **ThemeToggle**: sistema, claro u oscuro. El tema se aplica antes de pintar (`lib/theme.ts`), sin parpadeo.
-- **Toast**: aviso breve abajo con marco punteado y etiqueta `[ hecho ]` o `[ error ]`. Se va solo a los 4 s y lo anuncia un lector de pantalla. Lo lanza `notify` de `LibraryProvider` (guardar y borrar enlaces).
+- **Toast**: aviso breve arriba, bajo la cabecera. Colores invertidos (`bg-foreground text-background`) para destacar sin sombra; etiqueta `[ hecho ]` o `[ error ]` en `primary-soft`. Se va solo a los 4 s y lo anuncia un lector de pantalla. Lo lanza `notify` de `LibraryProvider` (guardar y borrar enlaces).
 - **MiniMap**: mapa CARTO de 280 px en el footer, adaptado de mapcn. Carga al entrar en pantalla, cambia con el tema y muestra atribución visible. Las teselas se sirven desde el servidor.
 
 ### Iconos
