@@ -1,12 +1,13 @@
 # Plan de índice
 
 > Página para que cualquier persona guarde y organice sus marcadores, con cuenta propia y privada.
-> Estado: **en producción** en https://indice-phi.vercel.app. F0 a F9 en `main`; quedan tareas de Manuel y F10 (vídeo). Última actualización: 2026-10-04.
+> Estado: **en producción** en https://indice-phi.vercel.app. F0 a F9 en `main`; quedan tareas de Manuel y F10 (vídeo). Última actualización: 2026-10-09.
 > Preview visual: https://claude.ai/artifact/H2iLStCWFxeGcyXBcDPUux (landing · entrar · bienvenida · app · /kit)
 
+- [Avisos al guardar y borrar, 2026-10-09](handovers-archive/HANDOVER-2026-10-09-avisos-marcadores.md) — `Toast` arriba con colores invertidos tras guardar o borrar un enlace; cuenta de gh y trampas del navegador.
 - [Handover de F8 a F9, 2026-10-04](handovers-archive/HANDOVER-2026-10-04-fases-8-a-9-produccion.md) — índice en producción: cumplimiento, Ajustes, Neon con dos ramas, Vercel solo `main`; pendientes y trampas.
 - [Handover de F8, 2026-10-04](handovers-archive/HANDOVER-2026-10-04-fase-8-landing.md) — F8 cerrada el mismo día con la clave de CARTO; detalles del mapa y la CSP.
-- [Lecciones](lessons.md) — correcciones de Manuel: responder en español; no afirmar en textos legales lo que aún no es cierto.
+- [Lecciones](lessons.md) — correcciones de Manuel: responder en español; no afirmar en textos legales lo que aún no es cierto; avisos flotantes con fondo propio.
 
 ---
 
@@ -18,6 +19,7 @@
 - **Probar con usuario:** `prueba@indice.test` por código; el código sale en la consola del servidor. Al terminar, borrarlo desde Ajustes (borrar cuenta). Los datos reales de Manuel nunca van al repo.
 - **Siguiente:** cerrar F9 con las tareas de Manuel (revisar la limpieza diaria en Vercel, IA de Vercel desactivada, MFA, soporte de Neon) y F10 (vídeo, pendiente). Resend y el dominio, más adelante. Por decidir: dominio `indice.dev` y servicio de correo (Resend), necesarios antes de abrir a otras personas.
 - **F8 (2026-10-04):** landing con datos de ejemplo; mapa real de CARTO vía MapLibre adaptado de mapcn, cargado al entrar en pantalla y servido desde `/api/map` para no contactar CARTO desde el navegador; footer privado centrado en la ciudad del usuario; mapa de calor móvil abierto en la semana actual; CSP con hash del script de tema y nonce para Next. Revisada en navegador en claro, oscuro, escritorio y 375 px. CARTO cambió sus condiciones en septiembre de 2026: exige una clave propia incluso para uso personal (hasta 5 millones de teselas al mes gratis). La clave está en `.env.local` como `CARTO_BASEMAPS_API_KEY` y el mapa se ha comprobado con ella. `/api/map` solo sirve lo que pide nuestro mapa (dos estilos, sprites, fuentes y teselas hasta zoom 12) y deja que el CDN lo guarde una semana, para que nadie pueda gastar el cupo. En desarrollo la CSP permite estilos inline porque Turbopack los inyecta sin nonce; en producción sigue estricta.
+- **Avisos (2026-10-09):** guardar o borrar un enlace muestra un `Toast` (`components/ds/toast.tsx`) que lanza `notify` de `LibraryProvider`; también los errores de fijar y borrar. Para otro aviso en la app, usar `useLibrary().notify`.
 - **Último arreglo (2026-10-04):** favicons que seguían rotos (huggingface, mapcn, manueltorres.pro, blobatar, autoskills, pixelcrash). El servidor ya los descargaba bien; el navegador guardaba 404 antiguos y `SiteIcon` no detectaba imágenes rotas antes de hidratar. Ahora la URL lleva versión (`lib/favicon-url.ts`, subir `FAVICON_VERSION` si vuelve a pasar) y `SiteIcon` comprueba con `decode()`.
 
 ---
@@ -239,7 +241,7 @@ Cada fase se cierra solo cuando su criterio se cumple con evidencia (tests, lint
   - [x] Deploy en producción comprobado el 2026-10-04: funciones en `fra1`, cabeceras de seguridad y CSP, páginas legales, mapa vía `/api/map` sin peticiones a terceros, rutas privadas protegidas (401/307), consola sin errores.
   - [x] *Manuel:* login con Google y con GitHub probado en producción (2026-10-04).
   - [x] README en español con captura de la landing (clara y oscura, `docs/img/`).
-  - [ ] Comprobar mañana en Vercel (Logs, cron) que la limpieza de las 4:00 respondió 200.
+  - [ ] Comprobar en Vercel (Logs, cron) que la limpieza diaria de las 4:00 responde 200 (pendiente desde el 2026-10-05; no se miró el 2026-10-09).
 - [ ] **F10 · Vídeo de lanzamiento (al terminar todo).** Probar la skill [onetake](https://github.com/feitangyuan/onetake), que genera vídeos de producto en una sola toma con movimiento continuo de cámara.
   - **Pendiente (decidido el 2026-10-04: se hará más adelante).** Antes de empezar, pedir permiso para instalar: la skill (`git clone` en `~/.claude/skills/onetake`, leer su código antes de usarla), `brew install ffmpeg`, `brew install python@3.12` (el Mac solo tiene Python 3.9), un venv con playwright, numpy, scipy, Pillow, matplotlib y opencv-python, y `playwright install chromium`. Unos 700 MB.
   - **Funcionamiento:** es local y no usa APIs de pago. Necesita Python 3 (playwright, numpy, scipy, Pillow, matplotlib, opencv), ffmpeg y node.
