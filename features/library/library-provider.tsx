@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { Toast, type ToastMessage } from "@/components/ds/toast"
 import { AddLinkDialog } from "@/features/library/add-link-dialog"
 import { SearchDialog } from "@/features/library/search-dialog"
 import type { CategoryView, LinkView } from "@/features/library/types"
@@ -8,7 +9,10 @@ import type { CategoryView, LinkView } from "@/features/library/types"
 type LibraryContext = {
   openSearch: () => void
   openAdd: (url?: string) => void
+  notify: (text: string, tone?: ToastMessage["tone"]) => void
 }
+
+const TOAST_MS = 4000
 
 const Context = React.createContext<LibraryContext | null>(null)
 
@@ -39,6 +43,14 @@ export function LibraryProvider({
 }) {
   const [searchOpen, setSearchOpen] = React.useState(false)
   const [add, setAdd] = React.useState<{ open: boolean; url: string }>({ open: false, url: "" })
+  const [toast, setToast] = React.useState<ToastMessage | null>(null)
+
+  // Cada aviso nuevo reinicia la cuenta atrás; el anterior se sustituye.
+  React.useEffect(() => {
+    if (!toast) return
+    const timer = window.setTimeout(() => setToast(null), TOAST_MS)
+    return () => window.clearTimeout(timer)
+  }, [toast])
 
   const value = React.useMemo<LibraryContext>(
     () => ({
@@ -47,6 +59,7 @@ export function LibraryProvider({
         setSearchOpen(false)
         setAdd({ open: true, url })
       },
+      notify: (text, tone = "done") => setToast({ id: Date.now(), text, tone }),
     }),
     []
   )
@@ -96,7 +109,9 @@ export function LibraryProvider({
         initialUrl={add.url}
         categories={categories}
         onOpenChange={(open) => setAdd((s) => ({ ...s, open }))}
+        onSaved={(name) => value.notify(`«${name}» se ha guardado en tu índice.`)}
       />
+      <Toast message={toast} />
     </Context.Provider>
   )
 }

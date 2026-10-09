@@ -148,6 +148,7 @@ Capas: `components/ui` (primitivos de shadcn adaptados) y `components/ds` (pieza
 - **IndexList / IndexEntry / IndexJump**: biblioteca A–Z con puntos guía y barra de letras. Ordena con las reglas del español (la Ñ después de la N, las tildes no separan).
 - **SiteIcon**: favicon o, si no hay o falla al cargar, la inicial. En oscuro lleva un fondo claro mínimo para que los favicons negros sigan viéndose.
 - **ThemeToggle**: sistema, claro u oscuro. El tema se aplica antes de pintar (`lib/theme.ts`), sin parpadeo.
+- **Toast**: aviso breve abajo con marco punteado y etiqueta `[ hecho ]` o `[ error ]`. Se va solo a los 4 s y lo anuncia un lector de pantalla. Lo lanza `notify` de `LibraryProvider` (guardar y borrar enlaces).
 - **MiniMap**: mapa CARTO de 280 px en el footer, adaptado de mapcn. Carga al entrar en pantalla, cambia con el tema y muestra atribución visible. Las teselas se sirven desde el servidor.
 
 ### Iconos
